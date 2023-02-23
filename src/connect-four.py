@@ -12,6 +12,7 @@ def get_col(s, i):
 
     s: str
     i: int
+    Returns: int
     """
     return int(s[i]) - 1
 
@@ -21,16 +22,35 @@ def get_row(s, i):
 
     s: str
     i: int
+    Returns: int
     """
     return s.count(s[i], 0, i)
 
 def get_pos(s, i):
+    """Return a tuple with position (as tuple of resulting row and
+    chosen column) and player of move i from game sequence s.
+
+    s: str
+    i: int
+    Returns: tuple
+    """
     return ((get_row(s, i), get_col(s, i)), get_player(i))
 
 def get_pos_list(s):
+    """Return a list with all positions resulting from game sequence s.
+
+    s: str
+    Returns: list
+    """
     return [get_pos(s, i) for i in range(len(s))]
 
 def get_pos_dict(s):
+    """Return a dictionary with all positions and corresponding player
+    from game sequence s.
+
+    s: str
+    Returns: dict
+    """
     d = dict()
     for p in get_pos_list(s):
         d[p[0]] = p[1]
@@ -49,4 +69,3 @@ def get_pos_grid(s):
                 p += '   '
         p += '|\n'
     return p + '+---------------------+'
-
