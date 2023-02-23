@@ -1,0 +1,83 @@
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
+#+TITLE: README - Connect Four
+#+DATE: <2023-02-21 Di>
+#+AUTHOR: Andreas Kellers
+#+EMAIL: andreas.kellers@gmail.com
+#+LANGUAGE: de
+#+SELECT_TAGS: export
+#+EXCLUDE_TAGS: noexport
+#+CREATOR: Emacs 26.3 (Org mode 9.1.9)
+
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS:
+#+LATEX_HEADER:
+#+LATEX_HEADER_EXTRA: \usepackage{ngerman, a4, longtable}
+#+DESCRIPTION:
+#+KEYWORDS:
+#+SUBTITLE:
+#+LATEX_COMPILER: pdflatex
+#+DATE: \today
+
+
+* Einführung
+
+  *Connect four* (oder im Deutschen *Vier Gewinnt* ist ein einfaches
+  Strategiespiel für zwei Spieler. Das Spielfeld besteht aus einem
+  Gitter mit 7 Spalten (senkrecht) und 6 Reihen (waagerecht). Das
+  Spielfeld steht aufrecht. Das Setzen der Steine kann nur in der
+  nächsten freie Reihe erfolgen. Die Spieler setzen abwechselnd
+  jeweils einen Spielstein (in klassisch in den Farben /Rot/ und
+  /Gelb/). Ziel ist es, eine Reihe von 4 Steinen in der eigenen Farbe zu
+  setzen. Dies kann senkrecht, waagerecht oder auch diagonal erfolgen.
+
+  Es besteht jeweils abwechselnd Zugzwang. Die Steine können beliebig
+  in einer der Spalten gesetzt werden (sofern noch nicht bis zur
+  obersten, sechsten Reihe besetzt). Jeder Spiele hat genau $21 = 6
+  \times 7 / 2$ Steine. Den ersten Zug hat Spieler Rot.
+
+  Gewonnen hat der Spieler, dem es zuerst gelingt, eine Viererreihe zu
+  bilden.
+  
+* Kodierung
+
+  Der Verlauf eines Spieles lässt sich eindeutig durch die Folge der
+  Spalten beschreiben, in denen ein Spieler seinen Stein platziert.
+
+  Ist zum Beispiel für die ersten $2 \times 3 = 6$ Züge die Folge der
+  verwendeten Spalten $\{3, 2, 2, 1, 3, 4\}$ ergibt sich folgende
+  Spielfeld mit $R = Rot$ für den ersten Spieler, $G = Gelb$ für den
+  Zweiten. Zur Veranschaulichung in der tabellarischen Darstellung
+  wird die Nummer des Spielzugs als Index an $R$ oder $G$ angezeigt.
+
+  #+ATTR_LATEX: :environment longtable :align |c|c|c|c|c|c|c|
+  |   1 | 2   | 3   |   4 | 5 | 6 | 7 |
+  |-----+-----+-----+-----+---+---+---|
+  |     |     |     |     |   |   |   |
+  |     |     |     |     |   |   |   |
+  |     |     |     |     |   |   |   |
+  |     | R_3 | R_5 |     |   |   |   |
+  | G_4 | G_2 | R_1 | G_6 |   |   |   |
+  
+  Die Kodierung als Liste $L = \{l_1, \ldots, \l_n\} mit l_i \in \{1,
+  \ldots 7\}$ erlaubt folgende Ableitungen:
+
+  1. Spieler im $i$-ten Zug ist /Rot/, falls $i$ ungerade, sonst
+     /Gelb/ (unter der Voraussetzung, dass /Rot/ den ersten Zug macht.
+  2. Mit Zug $l_i$ befinden sich $i$ Spielsteine in dem Gitter.
+  3. Die Liste hat eine maximale Länge $n = 6 \times 7 = 42$.
+  4. In jede Spalte kann höchstens 6 mal ein Stein gesetzt werden,
+     d.h.: Für $s = \{1, \dots, 7\} gibt es maximal 6 Indizes $i_j$
+     mit $l_i_j = s$.
+  5. Farbe und Position des Steins im Zug $l_i$ auf dem Gitter ist:
+     1. $/Rot/ falls i \equiv 1 \mod 2$ sonst /Gelb/.
+     2. Spalte $i$
+     3. Es sei $L' = \{l_1, \ldots, l_i\}$ die Teilliste von $L$ bis
+        zum Zug $l_i$.
+     
+
+
+  
