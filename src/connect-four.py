@@ -89,3 +89,8 @@ def get_pos_grid(s):
             else:
                 p += '   '
         p += '|\n'
+    b = '' # bottom line
+    for i in range(MAXCOLS):
+        b += '-' + str(i) + '-'
+    return p + '+' + b + '+'
+
