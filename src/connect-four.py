@@ -1,14 +1,25 @@
+#
+# Constants
+#
+MAXROWS = 6
+MAXCOLS = 7
+PLAYER1 = 'R'
+PLAYER2 = 'G'
+
+#
+# Functions
+#
 def get_player(i):
     """Returns the player for move i, either 'R' or 'G'.
 
     i: int
     Returns: str
     """
-    return 'G' if i % 2 == 1 else 'R'
+    return PLAYER1 if i % 2 == 0 else PLAYER2
 
 def get_col(s, i):
-    """Returns chosen column in move i from game sequence s. 
-    The column index is zero-based.
+    """Returns the chosen column in move i from game sequence s.  The
+    column index is zero-based.
 
     s: str
     i: int
@@ -17,8 +28,8 @@ def get_col(s, i):
     return int(s[i]) - 1
 
 def get_row(s, i):
-    """Returns resulting row in move i from game sequence s.
-    The row index is zero-based.
+    """Returns resulting row in move i from game sequence s. The row
+    index is zero-based.
 
     s: str
     i: int
@@ -27,29 +38,33 @@ def get_row(s, i):
     return s.count(s[i], 0, i)
 
 def get_pos(s, i):
-    """Return a tuple with position (as tuple of resulting row and
-    chosen column) and player of move i from game sequence s.
+    """Returns tuple with position (as tuple of row and column) and
+    player of move i from game sequence s.
 
     s: str
     i: int
-    Returns: tuple
+    Returns: tuple of type ((int, int), str)
     """
     return ((get_row(s, i), get_col(s, i)), get_player(i))
 
 def get_pos_list(s):
-    """Return a list with all positions resulting from game sequence s.
+    """Return list with sequence of positions from game sequence s.
 
     s: str
-    Returns: list
+    Returns: list of type ((int, int), str)
+
+    TODO: Highly optimizable. Should be re-implenmented using
+    memofication and iteration.
     """
     return [get_pos(s, i) for i in range(len(s))]
 
 def get_pos_dict(s):
-    """Return a dictionary with all positions and corresponding player
-    from game sequence s.
+    """Return dictionary with positions the players set by the game
+    sequence s. Keys are positions as tuple of row and column, values
+    are players.
 
     s: str
-    Returns: dict
+    Returns: dict with keys (int, int) and values str
     """
     d = dict()
     for p in get_pos_list(s):
@@ -57,15 +72,20 @@ def get_pos_dict(s):
     return d
 
 def get_pos_grid(s):
+    """Returns printable string representing the board as the grid
+    after performing the game sequence s.
+
+    s: str
+    Returns: str
+    """
+    p = '' # the result string
     d = get_pos_dict(s)
-    p = ''
     k = d.keys()
-    for r in reversed(range(6)):
+    for r in reversed(range(MAXROWS)):
         p += '|'
-        for c in range(7):
+        for c in range(MAXCOLS):
             if (r, c) in k:
                 p += " " + d[(r, c)] + " "
             else:
                 p += '   '
         p += '|\n'
-    return p + '+---------------------+'
