@@ -99,3 +99,29 @@ def get_pos_grid(s):
         b += '-' + str(i) + '-'
     return p + '+' + b + '+'
 
+#
+# Testing functions
+#
+def is_valid(s, i = None):
+    """Returns True if s is a valid game sequences regarding number of
+    columns and rows, i.e. the columns exist and are yet not filled.
+
+    With optional parameter i check validity only for move i in game
+    sequence s.
+
+    s: str
+    i: int
+    Returns: Boolean
+
+    """
+    if len(s) == 0:
+        return True
+    elif i == None: # `reduce' operation
+        res = True; j = 0
+        while r and j < len(s):
+            res = is_valid(s, j)
+            j += 1
+        return res
+    else:
+        return get_col(s, i) < MAXCOLS and get_row(s, i) < MAXROWS
+
