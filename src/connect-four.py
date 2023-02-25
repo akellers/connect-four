@@ -58,7 +58,7 @@ def get_pos_list(s):
     s: str
     Returns: list of type ((int, int), str)
 
-    TODO: Highly optimizable. Should be re-implenmented using
+    TODO: Highly optimizable. Should be re-implemented using
     memofication and iteration.
     """
     return [get_pos(s, i) for i in range(len(s))]
@@ -118,7 +118,7 @@ def is_valid(s, i = None):
         return True
     elif i == None: # `reduce' operation
         res = True; j = 0
-        while r and j < len(s):
+        while res and j < len(s):
             res = is_valid(s, j)
             j += 1
         return res
