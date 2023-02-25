@@ -87,17 +87,17 @@ def get_pos_grid(s):
     d = get_pos_dict(s)
     k = d.keys()
     for r in reversed(range(MAXROWS)):
-        p += '|'
+        p += ' |'
         for c in range(MAXCOLS):
             if (r, c) in k:
                 p += " " + d[(r, c)] + " "
             else:
                 p += '   '
-        p += '|\n'
+        p += '| ' + str(r+1) + '\n'
     b = '' # bottom line
     for i in range(MAXCOLS):
-        b += '-' + str(i) + '-'
-    return p + '+' + b + '+'
+        b += '-' + str(i+1) + '-'
+    return p + ' +' + b + '+'
 
 #
 # Testing functions
