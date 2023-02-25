@@ -199,3 +199,55 @@ def is_final(s, i = None):
         return True
 
     return False
+#
+# Generating functions
+#
+def gen_next_cols(s):
+    """Returns list of column indices for the next move after game sequence
+    s. The list may be emtpy if no next move available.
+
+    s: str
+    Returns: list
+
+    TODO: Implement filtering on win here or elsewhere?
+    """
+    l = []
+    for c in range(MAXCOLS):
+        p = get_pos(s + str(c + 1), len(s))
+        if p[0][0] < MAXROWS: # column not yet filled!
+            l.append(c)
+    return l
+
+def gen_next_seqs(s):
+    """Returns list of next games sequences by appending one move to
+    s. The list may be emtpy if no next move available.
+
+    s: str
+    Returns: list
+    """
+    l = []
+    for c in gen_next_cols(s):
+        l.append(s + str(c + 1))
+    return l
+
+def gen_full_seqs(s = '', lim = MAXROWS * MAXCOLS):
+    """Returns list of all game sequences starting with s. Optional
+    first argument allows setting of an initial game sequence. The
+    number of generated moves can be limited by the named parameter.
+
+    s: str (default is empty sequence '')
+    lim: int (default is maximum number of moves)
+    """
+    xs = [s]
+    ys = []
+    ll = len(s) + lim
+    while len(xs) > 0:
+        x = xs[0]; xs = xs[1:]
+        n = gen_next_seqs(x)
+        if len(n) == 0:
+            ys.append(x)
+        elif len(n[0]) < ll:
+            xs.extend(n)
+        else:
+            ys.extend(n)
+    return ys
