@@ -3,14 +3,19 @@
 #
 MAXROWS = 6
 MAXCOLS = 7
-PLAYER1 = 'R'
-PLAYER2 = 'G'
+PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
+# PLAYER2 = '\033[1;32;40mG\033[0;37;40m' # green on black
+PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
 
 #
-# Functions
+# FUNCTIONS
+#
+
+# Get-Functions
 #
 def get_player(i):
     """Returns the player for move i, either 'R' or 'G'.
+    The character is colored with ANSI escape codes.
 
     i: int
     Returns: str
