@@ -125,3 +125,77 @@ def is_valid(s, i = None):
     else:
         return get_col(s, i) < MAXCOLS and get_row(s, i) < MAXROWS
 
+def is_final(s, i = None):
+    """Returns True if move i in game sequence s leads to a win,
+    i.e. to four connected positions for one player.
+
+    If parameter i is missing use last move of game sequence instead.
+
+    s: str
+    i: int
+    Returns: Boolean
+
+    """
+    if len(s) < 7: # insufficent numer of moves
+        return False
+    if i == None:
+        n = len(s)-1
+    else:
+        n = i
+    d = get_pos_dict(s[:n+1])
+    p = get_pos(s, n)
+    r = p[0][0] # row
+    c = p[0][1] # col
+    x = p[1] # player
+    # check vertical
+    if r >= 3:
+        b1 = (r-1,c) in d and d[(r-1,c)] == x
+        b2 = (r-2,c) in d and d[(r-2,c)] == x
+        b3 = (r-3,c) in d and d[(r-3,c)] == x
+        if b1 and b2 and b3:
+            print("%s has won! Vertical in column %d." % (x, c+1))
+            return True
+        # check diagonal (left)
+        b1 = (r-1,c-1) in d and d[(r-1,c-1)] == x
+        b2 = (r-2,c-2) in d and d[(r-2,c-2)] == x
+        b3 = (r-3,c-3) in d and d[(r-3,c-3)] == x
+        if b1 and b2 and b3:
+            print("%s has won! Left diagonal from row %d and column %d." % (x, r+1, c+1))
+            return True
+        # check diagonal (right)
+        b1 = (r-1,c+1) in d and d[(r-1,c+1)] == x
+        b2 = (r-2,c+2) in d and d[(r-2,c+2)] == x
+        b3 = (r-3,c+3) in d and d[(r-3,c+3)] == x
+        if b1 and b2 and b3:
+            print("%s has won! Right diagonal from row %d and %d." % (x, r+1, c+1))
+            return True
+    # check horizontal (from left to right)
+    b1 = (r,c-3) in d and d[(r,c-3)] == x
+    b2 = (r,c-2) in d and d[(r,c-2)] == x
+    b3 = (r,c-1) in d and d[(r,c-1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! In row %d from column %d to %d." % (x, r+1, c-2, c+1))
+        return True
+    # check horizontal (from left to right)
+    b1 = (r,c-2) in d and d[(r,c-2)] == x
+    b2 = (r,c-1) in d and d[(r,c-1)] == x
+    b3 = (r,c+1) in d and d[(r,c+1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! In row %d from column %d to %d." % (x, r+1, c-1, c+2))
+        return True
+    # check horizontal (from left to right)
+    b1 = (r,c-1) in d and d[(r,c-1)] == x
+    b2 = (r,c+1) in d and d[(r,c+1)] == x
+    b3 = (r,c+2) in d and d[(r,c+2)] == x
+    if b1 and b2 and b3:
+        print("%s has won! In row %d from column %d to %d." % (x, r+1, c, c+3))
+        return True
+    # check horizontal (from left to right)
+    b1 = (r,c+1) in d and d[(r,c+1)] == x
+    b2 = (r,c+2) in d and d[(r,c+2)] == x
+    b3 = (r,c+3) in d and d[(r,c+3)] == x
+    if b1 and b2 and b3:
+        print("%s has won! In row %d from column %d to %d." % (x, r+1, c+1, c+4))
+        return True
+
+    return False
