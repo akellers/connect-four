@@ -40,15 +40,18 @@ def get_col(s):
     else:
         return int(s[-1:]) - 1
 
-def get_row(s, i):
+def get_row(s):
     """Returns resulting row in move i from game sequence s. The row
     index is zero-based.
 
     s: str
-    i: int
     Returns: int
     """
-    return s.count(s[i], 0, i)
+    if s == '':
+        return None
+    else:
+        l = len(s)
+        return s.count(s[l-1], 0, l-1)
 
 def get_pos(s, i):
     """Returns tuple with position (as tuple of row and column) and
