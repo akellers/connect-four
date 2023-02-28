@@ -252,37 +252,40 @@ def is_final(s):
     return is_win(s) or is_draw(s)
 
 #
-# Generating functions
+# Generator Functions
 #
 def gen_next_cols(s):
-    """Returns list of column indices for the next move after game sequence
-    s. The list may be emtpy if no next move available.
+    """Returns list of columns for moves after game sequence s. The list
+    may be emtpy if no next move available.
 
     s: str
-    Returns: list
+    Returns: list of type str
 
     TODO: Implement filtering on win here or elsewhere?
+
     """
     l = []
-    for c in range(MAXCOLS):
-        p = get_pos(s + str(c + 1), len(s))
+    for i in range(MAXCOLS):
+        c = str(i+1)
+        p = get_pos(s + c)
         if p[0][0] < MAXROWS: # column not yet filled!
             l.append(c)
     return l
 
 def gen_next_seqs(s):
-    """Returns list of next games sequences by appending one move to
-    s. The list may be emtpy if no next move available.
+    """Returns list of next games sequences s by appending one move. The
+    list may be emtpy if no next move available.
 
     s: str
     Returns: list
+
     """
     l = []
     for c in gen_next_cols(s):
-        l.append(s + str(c + 1))
+        l.append(s + c)
     return l
 
-def gen_full_seqs(s = '', lim = MAXROWS * MAXCOLS):
+def gen_game_seqs(s = '', lim = MAXROWS * MAXCOLS):
     """Returns list of all game sequences starting with s. Optional
     first argument allows setting of an initial game sequence. The
     number of generated moves can be limited by the named parameter.
@@ -292,14 +295,12 @@ def gen_full_seqs(s = '', lim = MAXROWS * MAXCOLS):
     """
     xs = [s]
     ys = []
-    ll = len(s) + lim
+    ll = min(len(s) + lim, MAXROWS * MAXCOLS)
     while len(xs) > 0:
         x = xs[0]; xs = xs[1:]
-        n = gen_next_seqs(x)
-        if len(n) == 0:
+        # sequence x final or limit reached?
+        if is_final(x) or len(x) >= ll:
             ys.append(x)
-        elif len(n[0]) < ll:
-            xs.extend(n)
         else:
-            ys.extend(n)
+            xs.extend(gen_next_seqs(x))
     return ys
