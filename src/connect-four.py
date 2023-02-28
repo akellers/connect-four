@@ -27,15 +27,18 @@ def get_player(s):
     else:
         return 1 + len(s) % 2
 
-def get_col(s, i):
-    """Returns the chosen column in move i from game sequence s.  The
+def get_col(s):
+    """Returns the chosen column in last move in game sequence s. The
     column index is zero-based.
 
     s: str
-    i: int
     Returns: int
+
     """
-    return int(s[i]) - 1
+    if s == '':
+        return None
+    else:
+        return int(s[-1:]) - 1
 
 def get_row(s, i):
     """Returns resulting row in move i from game sequence s. The row
