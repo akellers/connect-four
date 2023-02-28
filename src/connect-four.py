@@ -195,10 +195,8 @@ def is_win(s):
     if len(s) < 7: return False # unsufficient number of moves
 
     d = get_pos_dict(s)
-    p = get_pos(s)
-    r = p[0][0] # row
-    c = p[0][1] # col
-    x = p[1] # player
+    # row, column and player indices of last move
+    ((r, c), x) = next(reversed(d.items()))
 
     # vertical
     if r >= 3:
