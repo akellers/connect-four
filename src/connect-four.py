@@ -53,15 +53,14 @@ def get_row(s):
         l = len(s)
         return s.count(s[l-1], 0, l-1)
 
-def get_pos(s, i):
+def get_pos(s):
     """Returns tuple with position (as tuple of row and column) and
-    player of move i from game sequence s.
+    player of last move in game sequence s.
 
     s: str
-    i: int
     Returns: tuple of type ((int, int), str)
     """
-    return ((get_row(s, i), get_col(s, i)), get_player(i))
+    return ((get_row(s), get_col(s)), get_player(s))
 
 def get_pos_list(s):
     """Return list with sequence of positions from game sequence s.
