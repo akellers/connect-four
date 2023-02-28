@@ -60,7 +60,7 @@ def get_pos(s):
     player of last move in game sequence s.
 
     s: str
-    Returns: tuple of type ((int, int), str)
+    Returns: tuple of type ((int, int), int)
     """
     return ((get_row(s), get_col(s)), get_player(s))
 
