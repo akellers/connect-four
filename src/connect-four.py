@@ -107,105 +107,150 @@ def get_grid(s):
     return p + ' +' + b + '+'
 
 #
-# Testing functions
+# Test Functions
 #
-def is_valid(s, i = None):
-    """Returns True if s is a valid game sequences regarding number of
-    columns and rows, i.e. the columns exist and are yet not filled.
+def is_valid(s, rec = False):
+    """Returns True if last move in game sequences s is valid regarding
+    number of columns and rows, i.e. the column exist and are yet not
+    filled.
 
-    With optional parameter i check validity only for move i in game
-    sequence s.
+    With optional boolean parameter check validity recursivly.
 
     s: str
-    i: int
+    rec: Boolean (optional)
     Returns: Boolean
 
     """
     if len(s) == 0:
         return True
-    elif i == None: # `reduce' operation
-        res = True; j = 0
-        while res and j < len(s):
-            res = is_valid(s, j)
-            j += 1
-        return res
     else:
-        return get_col(s, i) < MAXCOLS and get_row(s, i) < MAXROWS
+        b = get_col(s) < MAXCOLS and get_row(s) < MAXROWS
+        if rec == True:
+            return b and is_valid(s[:-1], rec)
+        else:
+            return b
 
-def is_final(s, i = None):
-    """Returns True if move i in game sequence s leads to a win,
-    i.e. to four connected positions for one player.
 
-    If parameter i is missing use last move of game sequence instead.
+def is_win(s):
+    """Returns True if game sequence s leads to a win!
 
     s: str
-    i: int
     Returns: Boolean
-
     """
-    if len(s) < 7: # insufficent numer of moves
-        return False
-    if i == None:
-        n = len(s)-1
-    else:
-        n = i
-    d = get_pos_dict(s[:n+1])
-    p = get_pos(s, n)
+    if len(s) < 7: return False # unsufficient number of moves
+
+    d = get_pos_dict(s)
+    p = get_pos(s)
     r = p[0][0] # row
     c = p[0][1] # col
     x = p[1] # player
-    # check vertical
+
+    # vertical
     if r >= 3:
         b1 = (r-1,c) in d and d[(r-1,c)] == x
         b2 = (r-2,c) in d and d[(r-2,c)] == x
         b3 = (r-3,c) in d and d[(r-3,c)] == x
         if b1 and b2 and b3:
-            print("%s has won! Vertical in column %d." % (x, c+1))
+            print("%s has won! Vertical completed by row %d and %column %d (%s)." % (PLAYERS[1], r+1, c+1, s))
             return True
-        # check diagonal (left)
-        b1 = (r-1,c-1) in d and d[(r-1,c-1)] == x
-        b2 = (r-2,c-2) in d and d[(r-2,c-2)] == x
-        b3 = (r-3,c-3) in d and d[(r-3,c-3)] == x
-        if b1 and b2 and b3:
-            print("%s has won! Left diagonal from row %d and column %d." % (x, r+1, c+1))
-            return True
-        # check diagonal (right)
-        b1 = (r-1,c+1) in d and d[(r-1,c+1)] == x
-        b2 = (r-2,c+2) in d and d[(r-2,c+2)] == x
-        b3 = (r-3,c+3) in d and d[(r-3,c+3)] == x
-        if b1 and b2 and b3:
-            print("%s has won! Right diagonal from row %d and %d." % (x, r+1, c+1))
-            return True
+    # diagonal (upwards)
+    b1 = (r-1,c-1) in d and d[(r-1,c-1)] == x
+    b2 = (r-2,c-2) in d and d[(r-2,c-2)] == x
+    b3 = (r-3,c-3) in d and d[(r-3,c-3)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+1,c+1) in d and d[(r+1,c+1)] == x
+    b2 = (r-1,c-1) in d and d[(r-1,c-1)] == x
+    b3 = (r-2,c-2) in d and d[(r-2,c-2)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+2,c+2) in d and d[(r+2,c+2)] == x
+    b2 = (r+1,c+1) in d and d[(r+1,c+1)] == x
+    b3 = (r-1,c-1) in d and d[(r-1,c-1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+3,c+3) in d and d[(r+3,c+3)] == x
+    b2 = (r+2,c+2) in d and d[(r+2,c+2)] == x
+    b3 = (r+1,c+1) in d and d[(r+1,c+1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    # diagonal (downwards)
+    b1 = (r-1,c+1) in d and d[(r-1,c+1)] == x
+    b2 = (r-2,c+2) in d and d[(r-2,c+2)] == x
+    b3 = (r-3,c+3) in d and d[(r-3,c+3)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+1,c-1) in d and d[(r+1,c-1)] == x
+    b2 = (r-1,c+1) in d and d[(r-1,c+1)] == x
+    b3 = (r-2,c+2) in d and d[(r-2,c+2)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+2,c-2) in d and d[(r+2,c-2)] == x
+    b2 = (r+1,c-1) in d and d[(r+1,c-1)] == x
+    b3 = (r-1,c+1) in d and d[(r-1,c+1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
+    b1 = (r+3,c-3) in d and d[(r+3,c-3)] == x
+    b2 = (r+2,c-2) in d and d[(r+2,c-2)] == x
+    b3 = (r+1,c-1) in d and d[(r+1,c-1)] == x
+    if b1 and b2 and b3:
+        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+        return True
     # check horizontal (from left to right)
     b1 = (r,c-3) in d and d[(r,c-3)] == x
     b2 = (r,c-2) in d and d[(r,c-2)] == x
     b3 = (r,c-1) in d and d[(r,c-1)] == x
     if b1 and b2 and b3:
-        print("%s has won! In row %d from column %d to %d." % (x, r+1, c-2, c+1))
+        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
         return True
     # check horizontal (from left to right)
     b1 = (r,c-2) in d and d[(r,c-2)] == x
     b2 = (r,c-1) in d and d[(r,c-1)] == x
     b3 = (r,c+1) in d and d[(r,c+1)] == x
     if b1 and b2 and b3:
-        print("%s has won! In row %d from column %d to %d." % (x, r+1, c-1, c+2))
+        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
         return True
     # check horizontal (from left to right)
     b1 = (r,c-1) in d and d[(r,c-1)] == x
     b2 = (r,c+1) in d and d[(r,c+1)] == x
     b3 = (r,c+2) in d and d[(r,c+2)] == x
     if b1 and b2 and b3:
-        print("%s has won! In row %d from column %d to %d." % (x, r+1, c, c+3))
+        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
         return True
     # check horizontal (from left to right)
     b1 = (r,c+1) in d and d[(r,c+1)] == x
     b2 = (r,c+2) in d and d[(r,c+2)] == x
     b3 = (r,c+3) in d and d[(r,c+3)] == x
     if b1 and b2 and b3:
-        print("%s has won! In row %d from column %d to %d." % (x, r+1, c+1, c+4))
+        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
         return True
-
     return False
+
+def is_draw(s):
+    """Returns True if game sequence s leads to a draw.
+
+    s: str
+    Returns: Boolena
+    """
+    return len(s) == MAXROWS * MAXCOLS and not is_win(s)
+
+def is_final(s):
+    """Returns True if last move in game sequence s leads to a win or a
+    draw, i.e. to four connected positions for one player (win) or no
+    moves left (draw).
+
+    s: str
+    Returns: Boolean
+    """
+    return is_win(s) or is_draw(s)
+
 #
 # Generating functions
 #
