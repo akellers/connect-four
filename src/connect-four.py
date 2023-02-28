@@ -1,13 +1,31 @@
 #
-# Constants
+# Python implementation of the Connect Four-Game
 #
+# File: connect-four.py
+# Date: 2023-02-28
+#
+# General idea: Connect Four can be understood as sequence of
+# moves. These game sequence can be encoded as string where each
+# character names the chosen columns (from 1 to 7).
+#
+# For implementation purposes this game sequence can be represented by
+# a dictionary. Keys of the dictionary are the resulting position on
+# the board (a grid with 6 rows and 7 columns). The value stores the
+# respective player index (0 or 1).
+#
+# Note: Python dictionaries preserve insertion order since version
+# 3.7!
+#
+
+# CONSTANTS
 MAXROWS = 6
 MAXCOLS = 7
+# ASCII encoded characters for the players
 PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
 PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
 PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
+# '\033[1;32;40mG\033[0;37;40m' # green on black
 
-# PLAYER2 = '\033[1;32;40mG\033[0;37;40m' # green on black
 
 #
 # FUNCTIONS
