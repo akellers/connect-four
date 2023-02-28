@@ -116,7 +116,7 @@ def get_grid(s):
     b = '' # bottom line
     for i in range(MAXCOLS):
         b += '-' + str(i+1) + '-'
-    return p + ' +' + b + '+'
+        return p + ' +' + b + '+'
 
 #
 # Test Functions
@@ -141,7 +141,6 @@ def is_valid(s, rec = False):
             return b and is_valid(s[:-1], rec)
         else:
             return b
-
 
 def is_win(s):
     """Returns True if game sequence s leads to a win!
