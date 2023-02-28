@@ -81,10 +81,7 @@ def get_pos_dict(s):
     s: str
     Returns: dict with keys (int, int) and values str
     """
-    d = dict()
-    for p in get_pos_list(s):
-        d[p[0]] = p[1]
-    return d
+    return dict(get_pos_list(s))
 
 def get_pos_grid(s):
     """Returns printable string representing the board as the grid
