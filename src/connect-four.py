@@ -4,9 +4,10 @@
 MAXROWS = 6
 MAXCOLS = 7
 PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
-# PLAYER2 = '\033[1;32;40mG\033[0;37;40m' # green on black
 PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
-PLAYERS = { 1 : PLAYER1, 2 : PLAYER2 }
+PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
+
+# PLAYER2 = '\033[1;32;40mG\033[0;37;40m' # green on black
 
 #
 # FUNCTIONS
@@ -15,8 +16,9 @@ PLAYERS = { 1 : PLAYER1, 2 : PLAYER2 }
 # Get Functions
 #
 def get_player(s):
-    """Returns the player number for last move in game sequence s. Returns
-    None if s is empty.
+    """Returns the player index for last move in game sequence s. Player
+    indices are zero based, starting with 0 for the first
+    move. Returns None if s is empty.
 
     s: str
     Returns: int
@@ -25,7 +27,7 @@ def get_player(s):
     if s == '':
         return None
     else:
-        return 1 + len(s) % 2
+        return (len(s) + 1) % 2
 
 def get_col(s):
     """Returns the chosen column in last move in game sequence s. The
