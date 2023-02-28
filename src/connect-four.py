@@ -6,21 +6,26 @@ MAXCOLS = 7
 PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
 # PLAYER2 = '\033[1;32;40mG\033[0;37;40m' # green on black
 PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
+PLAYERS = { 1 : PLAYER1, 2 : PLAYER2 }
 
 #
 # FUNCTIONS
 #
 
-# Get-Functions
+# Get Functions
 #
-def get_player(i):
-    """Returns the player for move i, either 'R' or 'G'.
-    The character is colored with ANSI escape codes.
+def get_player(s):
+    """Returns the player number for last move in game sequence s. Returns
+    None if s is empty.
 
-    i: int
-    Returns: str
+    s: str
+    Returns: int
+
     """
-    return PLAYER1 if i % 2 == 0 else PLAYER2
+    if s == '':
+        return None
+    else:
+        return 1 + len(s) % 2
 
 def get_col(s, i):
     """Returns the chosen column in move i from game sequence s.  The
