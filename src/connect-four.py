@@ -27,12 +27,38 @@ PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
 # '\033[1;32;40mG\033[0;37;40m' # green on black
 
 
-#
-# FUNCTIONS
-#
+# ENCODING/DECODING
+def decode(s):
+    """Return dict from game sequence s with postions (int, int) as
+    key and player index (int).
 
-# Get Functions
-#
+    s: str
+    Returns: dict with key (int, int) and value int
+
+    """
+    dic = {} # resulting dict
+    # dict with free row per columns
+    row = { i : 0 for i in range(MAXCOLS) }
+    if s == '':
+        return dic
+    else:
+        for i in range(len(s)):
+            c = int(s[i]) - 1 # column index zero based
+            p = i % 2 # player index starting with 0
+            r = row[c] # free row in colum c
+            dic[(r, c)] = p # add pos and player into dict
+            row[c] = r + 1 # increase row for column c
+    return dic
+
+def encode(d):
+    """Return string with game sequence from dictionary d.
+
+    d: dict
+    Returns: str
+    """
+    return ''.join([str(k[1]+1) for k in d])
+
+# GET FUNCTIONS
 def get_player(s):
     """Returns the player index for last move in game sequence s. Player
     indices are zero based, starting with 0 for the first
