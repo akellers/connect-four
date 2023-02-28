@@ -124,6 +124,7 @@ def get_pos_dict(s):
 
     s: str
     Returns: dict with keys (int, int) and values int
+    TODO: Obsolete with get_decoding
     """
     dic = {}
     row = { i : 0 for i in range(MAXCOLS) }
@@ -140,7 +141,7 @@ def get_pos_dict(s):
     # return dict(get_pos_list(s))
 
 def get_grid(s):
-    """Returns printable string representing the board as grid after game
+    """Returns printable string representing the board after game
     sequence s. Moves are colored using ASCII encoding.
 
     s: str
