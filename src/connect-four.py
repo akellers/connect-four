@@ -83,21 +83,21 @@ def get_pos_dict(s):
     """
     return dict(get_pos_list(s))
 
-def get_pos_grid(s):
-    """Returns printable string representing the board as the grid
-    after performing the game sequence s.
+def get_grid(s):
+    """Returns printable string representing the board as grid after game
+    sequence s. Moves are colored using ASCII encoding.
 
     s: str
     Returns: str
+
     """
     p = '' # the result string
     d = get_pos_dict(s)
-    k = d.keys()
     for r in reversed(range(MAXROWS)):
         p += ' |'
         for c in range(MAXCOLS):
-            if (r, c) in k:
-                p += " " + d[(r, c)] + " "
+            if (r, c) in d:
+                p += " " + PLAYERS[d[(r, c)]] + " "
             else:
                 p += '   '
         p += '| ' + str(r+1) + '\n'
