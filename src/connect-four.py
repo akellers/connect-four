@@ -71,7 +71,7 @@ def get_pos_list(s):
     TODO: Highly optimizable. Should be re-implemented using
     memofication and iteration.
     """
-    return [get_pos(s, i) for i in range(len(s))]
+    return [get_pos(s[0:i]) for i in range(1, len(s)+1)]
 
 def get_pos_dict(s):
     """Return dictionary with positions the players set by the game
