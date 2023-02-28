@@ -69,21 +69,31 @@ def get_pos_list(s):
 
     s: str
     Returns: list of type ((int, int), str)
-
-    TODO: Highly optimizable. Should be re-implemented using
-    memofication and iteration.
+    TODO: Obsolete with get_pos_dict
     """
     return [get_pos(s[0:i]) for i in range(1, len(s)+1)]
 
 def get_pos_dict(s):
     """Return dictionary with positions the players set by the game
     sequence s. Keys are positions as tuple of row and column, values
-    are players.
+    are player indices.
 
     s: str
-    Returns: dict with keys (int, int) and values str
+    Returns: dict with keys (int, int) and values int
     """
-    return dict(get_pos_list(s))
+    dic = {}
+    row = { i : 0 for i in range(MAXCOLS) }
+    if s == '':
+        return dic
+    else:
+        for i in range(len(s)):
+            c = int(s[i]) - 1 # zero based
+            p = i % 2
+            r = row[c]
+            dic[(r, c)] = p
+            row[c] = r + 1
+    return dic
+    # return dict(get_pos_list(s))
 
 def get_grid(s):
     """Returns printable string representing the board as grid after game
