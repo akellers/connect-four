@@ -162,86 +162,41 @@ def is_win(s):
         b2 = (r-2,c) in d and d[(r-2,c)] == x
         b3 = (r-3,c) in d and d[(r-3,c)] == x
         if b1 and b2 and b3:
-            print("%s has won! Vertical completed by row %d and %column %d (%s)." % (PLAYERS[1], r+1, c+1, s))
+            print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[1], r+1, c+1, s))
             return True
     # diagonal (upwards)
-    b1 = (r-1,c-1) in d and d[(r-1,c-1)] == x
-    b2 = (r-2,c-2) in d and d[(r-2,c-2)] == x
-    b3 = (r-3,c-3) in d and d[(r-3,c-3)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
-    b1 = (r+1,c+1) in d and d[(r+1,c+1)] == x
-    b2 = (r-1,c-1) in d and d[(r-1,c-1)] == x
-    b3 = (r-2,c-2) in d and d[(r-2,c-2)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
+    b0 = (r+3,c+3) in d and d[(r+3,c+3)] == x
     b1 = (r+2,c+2) in d and d[(r+2,c+2)] == x
     b2 = (r+1,c+1) in d and d[(r+1,c+1)] == x
     b3 = (r-1,c-1) in d and d[(r-1,c-1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+    b4 = (r-2,c-2) in d and d[(r-2,c-2)] == x
+    b5 = (r-3,c-3) in d and d[(r-3,c-3)] == x
+    if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
+        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
         return True
-    b1 = (r+3,c+3) in d and d[(r+3,c+3)] == x
-    b2 = (r+2,c+2) in d and d[(r+2,c+2)] == x
-    b3 = (r+1,c+1) in d and d[(r+1,c+1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
+
     # diagonal (downwards)
-    b1 = (r-1,c+1) in d and d[(r-1,c+1)] == x
-    b2 = (r-2,c+2) in d and d[(r-2,c+2)] == x
-    b3 = (r-3,c+3) in d and d[(r-3,c+3)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
-    b1 = (r+1,c-1) in d and d[(r+1,c-1)] == x
-    b2 = (r-1,c+1) in d and d[(r-1,c+1)] == x
-    b3 = (r-2,c+2) in d and d[(r-2,c+2)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
+    b0 = (r+3,c-3) in d and d[(r+3,c-3)] == x
     b1 = (r+2,c-2) in d and d[(r+2,c-2)] == x
     b2 = (r+1,c-1) in d and d[(r+1,c-1)] == x
     b3 = (r-1,c+1) in d and d[(r-1,c+1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
+    b4 = (r-2,c+2) in d and d[(r-2,c+2)] == x
+    b5 = (r-3,c+3) in d and d[(r-3,c+3)] == x
+    if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
+        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
         return True
-    b1 = (r+3,c-3) in d and d[(r+3,c-3)] == x
-    b2 = (r+2,c-2) in d and d[(r+2,c-2)] == x
-    b3 = (r+1,c-1) in d and d[(r+1,c-1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Diagonal completed by row %d and column %d (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
+
     # check horizontal (from left to right)
-    b1 = (r,c-3) in d and d[(r,c-3)] == x
-    b2 = (r,c-2) in d and d[(r,c-2)] == x
-    b3 = (r,c-1) in d and d[(r,c-1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
-    # check horizontal (from left to right)
+    b0 = (r,c-3) in d and d[(r,c-3)] == x
     b1 = (r,c-2) in d and d[(r,c-2)] == x
     b2 = (r,c-1) in d and d[(r,c-1)] == x
     b3 = (r,c+1) in d and d[(r,c+1)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
+    b4 = (r,c+2) in d and d[(r,c+2)] == x
+    b5 = (r,c+3) in d and d[(r,c+3)] == x
+    if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
+        print("%s wins! Horizontal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
         return True
-    # check horizontal (from left to right)
-    b1 = (r,c-1) in d and d[(r,c-1)] == x
-    b2 = (r,c+1) in d and d[(r,c+1)] == x
-    b3 = (r,c+2) in d and d[(r,c+2)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
-    # check horizontal (from left to right)
-    b1 = (r,c+1) in d and d[(r,c+1)] == x
-    b2 = (r,c+2) in d and d[(r,c+2)] == x
-    b3 = (r,c+3) in d and d[(r,c+3)] == x
-    if b1 and b2 and b3:
-        print("%s has won! Horizontal completed by row %d and column % (%s)." % (PLAYERS[x], r+1, c+1, s))
-        return True
+
     return False
 
 def is_draw(s):
