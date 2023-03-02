@@ -45,9 +45,13 @@ def decode(s):
         for i in range(len(s)):
             c = int(s[i]) - 1 # column index zero based
             p = i % 2 # player index starting with 0
-            r = row[c] # free row in colum c
-            dic[(r, c)] = p # add pos and player into dict
-            row[c] = r + 1 # increase row for column c
+            r = row.get(c, -1) # free row in column c
+            if 0 <= c < MAXCOLS and 0 <= r < MAXROWS:
+                dic[(r, c)] = p # add pos and player into dict
+                row[c] = r + 1 # increase row for column c
+            else:
+                print("Move %d '%s' in sequence '%s' leads to invalid position (%d, %d)!" % (i, s[i], s, r, c))
+                return dic
     return dic
 
 def encode(d):
