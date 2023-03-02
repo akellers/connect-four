@@ -154,7 +154,7 @@ def get_grid(s):
 
     """
     p = '' # the result string
-    d = get_pos_dict(s)
+    d = decode(s)
     for r in reversed(range(MAXROWS)):
         p += ' |'
         for c in range(MAXCOLS):
