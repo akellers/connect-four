@@ -161,7 +161,7 @@ def get_grid(s):
     b = '' # bottom line
     for i in range(MAXCOLS):
         b += '-' + str(i+1) + '-'
-        return p + ' +' + b + '+'
+    return p + ' +' + b + '+'
 
 #
 # Test Functions
