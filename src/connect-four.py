@@ -25,19 +25,20 @@ PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
 PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
 PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
 # '\033[1;32;40mG\033[0;37;40m' # green on black
-
+# '\033[1;33;40mG\033[0;37;40m' # yellow on black
 
 # ENCODING/DECODING
 def decode(s):
-    """Return dict from game sequence s with postions (int, int) as
-    key and player index (int).
+    """Return dict from game sequence s with postions (int, int) as key
+    and player index (int). Decoding stops if resulting position is
+    not valid, i.e. exceeds maximum number of rows or columns.
 
     s: str
     Returns: dict with key (int, int) and value int
 
     """
     dic = {} # resulting dict
-    # dict with free row per columns
+    # local dict with free rows per columns (initially 0)
     row = { i : 0 for i in range(MAXCOLS) }
     if s == '':
         return dic
