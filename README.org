@@ -14,7 +14,7 @@
 
 #+LATEX_CLASS: article
 #+LATEX_CLASS_OPTIONS:
-#+LATEX_HEADER:
+#+LATEX_HEADER: \DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\scriptsize}
 #+LATEX_HEADER_EXTRA: \usepackage{ngerman, a4, longtable}
 #+DESCRIPTION:
 #+KEYWORDS:
