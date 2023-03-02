@@ -72,7 +72,7 @@
   3. Die Liste hat eine maximale Länge $n = 6 \times 7 = 42$.
   4. In jede Spalte kann höchstens 6 mal ein Stein gesetzt werden,
      d.h.: Für $s = \{1, \dots, 7\}$ gibt es maximal 6 Indizes $i_j$
-     mit $l_i_j = s$.
+     mit $l_{i_j} = s$.
   5. Farbe und Position des Steins im Zug $l_i$ auf dem Gitter sind:
      + Farbe: /Rot/ falls $i \equiv 1 \mod 2$, sonst /Gelb/.
      + Spalte: $i$
@@ -132,7 +132,7 @@
    Die Funktion =decode= wandelt eine Zeichenkette =s= mit einer
    Zugfolge in ein entsprechendes Dictionary um. Hierbei wird
    sichergestellt, dass sich über die Zugfolge nur valide Positionen
-   auf dem Spielfeld ergebene, d.h. die maximale Zeilen- und
+   auf dem Spielfeld ergeben, d.h. die maximale Zeilen- und
    Spaltenanzahl nicht überschritten wird.
 
    In =Python= sieht das Dictionary für das oben gezeigte Gitter wie
