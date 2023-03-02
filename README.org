@@ -129,15 +129,54 @@
    0-basiert sind, d.h. auf dem klassischen Spielfeld mit 6 Zeilen und
    7 Spalten git es Positionen von =(0, 0)= bis =(5, 6)=.
 
+   Die Funktion =decode= wandelt eine Zeichenkette =s= mit einer
+   Zugfolge in ein entsprechendes Dictionary um. Hierbei wird
+   sichergestellt, dass sich über die Zugfolge nur valide Positionen
+   auf dem Spielfeld ergebene, d.h. die maximale Zeilen- und
+   Spaltenanzahl nicht überschritten wird.
+
    In =Python= sieht das Dictionary für das oben gezeigte Gitter wie
    folgt aus:
 
    #+NAME: decode
    #+BEGIN_SRC python :var s = "322134"
-    print("Dictionary for game sequence '%s':" % s)
+    print("Game dictionary for sequence '%s':" % s)
     print(decode(s))
    #+END_SRC
 
    #+RESULTS: decode
-   : Dictionary for game sequence 322134:
-   : {(0, 1): 1, (1, 2): 0, (0, 0): 1, (1, 1): 0, (0, 3): 1, (0, 2): 0}
+   : Game dictionary for sequence '322134':
+   : {(0, 2): 0, (0, 1): 1, (1, 1): 0, (0, 0): 1, (1, 2): 0, (0, 3): 1}
+
+** Function =encode=
+
+   Die Funktion ist das Pendant zu =decode= und wandelt ein Dictionary
+   mit den Positionen und Spielern um eine Zeichenkette mit der Folge
+   der gewählten Spalten.
+
+   Mit dem =dict= aus dem obigen Beispiel liefert die Funktion wieder
+   die Zeichenkette ='3222134'=:
+
+   #+NAME: encode
+   #+BEGIN_SRC python :var d = "{(0, 2): 0, (0, 1): 1, (1, 1): 0, (0, 0): 1, (1, 2): 0, (0, 3): 1}"
+    d = eval(d) # conversion into dict type
+    print("Game sequence for dictionary '%s':" % d)
+    print(encode(d))
+   #+END_SRC
+
+   #+RESULTS: encode
+   : Game sequence for dictionary '{(0, 2): 0, (0, 1): 1, (1, 1): 0, (0, 0): 1, (1, 2): 0, (0, 3): 1}':
+   : 322134
+
+   Die Funktion =encode= ist invers zu =decode= (bei validen
+   Spielverläufen innerhalb des Spielfelds):
+
+   #+NAME: decode-encode
+   #+BEGIN_SRC python :var s = "12345345235"
+    print("Assert `encode' after `decode' yields sequence '%s' again:" % s)
+    print(encode(decode(s)) == s)
+   #+END_SRC
+
+   #+RESULTS: decode-encode
+   : Assert `encode' after `decode' yields sequence '12345345235' again:
+   : True
