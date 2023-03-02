@@ -61,7 +61,7 @@ def encode(d):
     d: dict
     Returns: str
     """
-    return ''.join([str(k[1]+1) for k in d])
+    return ''.join([str(k[1]+1) for k in d.keys()])
 
 # GET FUNCTIONS
 def get_player(s):
