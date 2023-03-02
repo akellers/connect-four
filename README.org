@@ -84,7 +84,7 @@
 
 * Implementierung
   :PROPERTIES:
-  :header-args:python:   :results output :python python -i 'src/connect-four.py' :exports both
+  :header-args:python:   :results output :python python3.7 -i 'src/connect-four.py' :exports both
   :END:
 
   Die Implementierung in =Python= erfolgt in dem Skript
@@ -110,7 +110,7 @@
    #+END_SRC
 
    #+RESULTS: get_grid
-   : 322134
+   : Board for game sequence '322134':
    :  |                     | 6
    :  |                     | 5
    :  |                     | 4
