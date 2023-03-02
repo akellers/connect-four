@@ -82,5 +82,62 @@
 
 
 
+* Implementierung
+  :PROPERTIES:
+  :header-args:python:   :results output :python python -i 'src/connect-four.py' :exports both
+  :END:
 
-  
+  Die Implementierung in =Python= erfolgt in dem Skript
+  [[file:src/connect-four.py]]. Nachfolgende Beispiele verwenden das
+  Skript und zeigen den jeweiligen Output.
+
+  Für die Kodierung der Spielverläufe als Liste von Spaltenindizes
+  wird in der Umsetzung ein String (Datentyp =str=) verwendet. Aus der
+  oben verwendeten Liste wird in =Python= somit die Zeichenkette
+  ='322134'=.
+
+** Funktion =get_grid=
+
+   Die Funktion =get_grid(s)= erzeugt aus einer derartigen Spielfolge
+   eine Zeichenkette mit einer einfachen Darstellung des
+   resultierenden Spielfelds.
+
+   #+NAME: get_grid
+   #+BEGIN_SRC python :var s = "322134"
+    PLAYERS = { 0: 'R', 1: 'G' } # to suppress ASCII encoding
+    print("Board for game sequence '%s':" % s)
+    print(get_grid(s))
+   #+END_SRC
+
+   #+RESULTS: get_grid
+   : 322134
+   :  |                     | 6
+   :  |                     | 5
+   :  |                     | 4
+   :  |                     | 3
+   :  |    R  R             | 2
+   :  | G  G  R  G          | 1
+   :  +-1--2--3--4--5--6--7-+
+
+** Funktion =decode=
+
+   Die Funktion =get_grid(s)= nutzt intern ein Dictionary (Typ
+   =dict=). Schlüssel für dieses Dictionary sind dabei die (besetzten)
+   Positionen. Die Werte (Values) sind dabei die Spieler-Indizes. Die
+   Positionen sind Tupel vom Typ =(int, int)=, Spieler sind =0= oder
+   =1=. Hierbei ist zu beachten, dass die Werte für Zeilen und Spalten
+   0-basiert sind, d.h. auf dem klassischen Spielfeld mit 6 Zeilen und
+   7 Spalten git es Positionen von =(0, 0)= bis =(5, 6)=.
+
+   In =Python= sieht das Dictionary für das oben gezeigte Gitter wie
+   folgt aus:
+
+   #+NAME: decode
+   #+BEGIN_SRC python :var s = "322134"
+    print("Dictionary for game sequence '%s':" % s)
+    print(decode(s))
+   #+END_SRC
+
+   #+RESULTS: decode
+   : Dictionary for game sequence 322134:
+   : {(0, 1): 1, (1, 2): 0, (0, 0): 1, (1, 1): 0, (0, 3): 1, (0, 2): 0}
