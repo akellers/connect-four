@@ -189,12 +189,11 @@ def gen_dict(d = {}, lim = 1):
     ll = min(len(d) + lim, MAXROWS * MAXCOLS)
     while len(ds) > 0:
         x = ds.pop()
-        # TODO: replace encode step here
-        if len(x) >= ll or is_final(x):
+        if is_final(x) or len(x) >= ll:
             rs.append(x)
         else:
-            for m in gen_next(x):
-                l = list(x.items())
-                l.append(m)
-                ds.append(dict(l))
+            for (po, pl) in gen_next(x):
+                dc = x.copy()
+                dc[po] = pl
+                ds.append(dc)
     return(rs)
