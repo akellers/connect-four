@@ -173,7 +173,7 @@ def gen_next(d):
         for t in ps:
             r = max(t[0]+1, r)
         if r < MAXROWS:
-            l.append(((r, c), 1))
+            l.append(((r, c), p))
     return(l)
 
 def gen_dict(d = {}, lim = 1):
