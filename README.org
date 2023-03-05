@@ -177,3 +177,28 @@
    #+RESULTS: decode-encode
    : Assert `encode' after `decode' yields sequence '12345345235' again:
    : True
+
+** TODO Funktion =gen_dict=
+
+   Die Funktion =gen_dict(d, lim)= generiert ausgehend von der
+   Spielfolge in dem Dictionary =d= die Liste der Dictionaries über
+   die die nächsten =lim= Züge (Defaultwert für =d= ist die leere
+   Spielfeld ={}= und 1 für =lim=).
+
+   Die resultierende Liste enthält Spielfolgen der Länge =len(d) +
+   lim= oder kürzer, falls die Spielfolge vorher mit dem Sieg eines
+   Spielers oder einem Unentschieden endet. Man beachte: Eine
+   Spielfolge ist maximal 42 Spielzüge lang.
+
+   Beginnend mit einem leeren Feld gibt es z.B. über die ersten 3
+   Spielzüge genau $7^3 = 343$ unterschiedliche Spielfolgen:
+
+   #+NAME: gen-dict-start
+   #+BEGIN_SRC python
+    print("Assert: There are 343 different game sequences for the first 3 moves.")
+    print(len(gen_dict(lim=3)))
+   #+END_SRC
+
+   #+RESULTS: gen-dict-start
+   : Assert: There are 343 different game sequences for the first 3 moves.
+   : 343
