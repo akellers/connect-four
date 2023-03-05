@@ -2,7 +2,7 @@
 # Python implementation of the Connect Four-Game
 #
 # File: connect-four.py
-# Date: 2023-02-28
+# Date: 2023-03-05
 #
 # General idea: Connect Four can be understood as sequence of
 # moves. These game sequence can be encoded as string where each
@@ -10,11 +10,11 @@
 #
 # For implementation purposes this game sequence can be represented by
 # a dictionary. Keys of the dictionary are the resulting position on
-# the board (a grid with 6 rows and 7 columns). The value stores the
+# the board (a grid with 6 rows and 7 columns). The values hold the
 # respective player index (0 or 1).
 #
-# Note: Python dictionaries preserve insertion order since version
-# 3.7!
+# Note: The `encode' function relies on the fact that Python
+# dictionaries preserve insertion (since version 3.7)
 #
 
 # CONSTANTS
@@ -44,6 +44,7 @@ def decode(s):
         return dic
     else:
         for i in range(len(s)):
+            # TODO: check character in '1' to '7'?
             c = int(s[i]) - 1 # column index zero based
             p = i % 2 # player index starting with 0
             r = row.get(c, -1) # free row in column c
