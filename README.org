@@ -175,14 +175,14 @@
    #+END_SRC
 
    #+RESULTS: decode-encode
-   : Assert `encode' after `decode' yields sequence '12345345235' again:
+   : Assert: `encode' after `decode' yields sequence '12345345235' again:
    : True
 
 ** TODO Funktion =gen_dict=
 
    Die Funktion =gen_dict(d, lim)= generiert ausgehend von der
    Spielfolge in dem Dictionary =d= die Liste der Dictionaries über
-   die die nächsten =lim= Züge (Defaultwert für =d= ist die leere
+   die nächsten =lim= Züge (Defaultwert für =d= ist das leere
    Spielfeld ={}= und 1 für =lim=).
 
    Die resultierende Liste enthält Spielfolgen der Länge =len(d) +
