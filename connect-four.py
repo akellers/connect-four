@@ -65,16 +65,23 @@ def encode(d):
     return ''.join([str(k[1]+1) for k in d.keys()])
 
 # PRINTABLE REPRESENTATION
-def get_grid(s):
+def grid(s):
     """Returns printable string representing the board after game
-    sequence s. Moves are colored using ASCII encoding.
+    sequence s (or dictionary). Moves are colored using ASCII encoding.
 
     s: str
     Returns: str
 
     """
     p = '' # the result string
-    d = decode(s)
+    if isinstance(s, str):
+        d = decode(s)
+    elif isisntance(s, dict):
+        d = s
+    else:
+        print("Argument '%s' is not a valid game sequence!" % s)
+        return None
+
     for r in reversed(range(MAXROWS)):
         p += ' |'
         for c in range(MAXCOLS):
@@ -153,7 +160,7 @@ def is_final(d):
     return is_win(d) or len(d) == MAXROWS * MAXCOLS
 
 # GENERATORS
-def gen_next(d):
+def next_moves(d):
     """Returns list with possible next tupels for game dictionary
     d. Tuples contain position and player. List may be empty if
     there is no next move.
@@ -176,7 +183,7 @@ def gen_next(d):
             l.append(((r, c), p))
     return(l)
 
-def gen_dict(d = {}, lim = 1):
+def next_dicts(d = {}, lim = 1):
     """Returns list of all possible game dictionaries starting with d. The
     maximum number of moves is limited by the optional parameter.
 
@@ -192,7 +199,7 @@ def gen_dict(d = {}, lim = 1):
         if is_final(x) or len(x) >= ll:
             rs.append(x)
         else:
-            for (po, pl) in gen_next(x):
+            for (po, pl) in next_moves(x):
                 dc = x.copy()
                 dc[po] = pl
                 ds.append(dc)

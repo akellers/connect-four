@@ -92,20 +92,20 @@
   oben verwendeten Liste wird in =Python= somit die Zeichenkette
   ='322134'=.
 
-** Funktion =get_grid=
+** Funktion =grid=
 
-   Die Funktion =get_grid(s)= erzeugt aus einer derartigen Spielfolge
-   eine Zeichenkette mit einer einfachen Darstellung des
-   resultierenden Spielfelds.
+   Die Funktion =grid(s)= erzeugt aus einer derartigen Spielfolge eine
+   Zeichenkette mit einer einfachen Darstellung des resultierenden
+   Spielfelds.
 
-   #+NAME: get_grid
+   #+NAME: grid
    #+BEGIN_SRC python :var s = "322134"
     PLAYERS = { 0: 'R', 1: 'G' } # to suppress ASCII encoding
     print("Board for game sequence '%s':" % s)
-    print(get_grid(s))
+    print(grid(s))
    #+END_SRC
 
-   #+RESULTS: get_grid
+   #+RESULTS: grid
    : Board for game sequence '322134':
    :  |                     | 6
    :  |                     | 5
@@ -117,7 +117,7 @@
 
 ** Funktion =decode=
 
-   Die Funktion =get_grid(s)= nutzt intern ein Dictionary (Typ
+   Die Funktion =grid(s)= nutzt intern ein Dictionary (Typ
    =dict=). Schlüssel (Keys) für dieses Dictionary sind dabei die
    (besetzten) Positionen. Hierbei ist zu beachten, dass die Werte für
    Zeilen und Spalten 0-basiert sind, d.h. auf dem klassischen
@@ -178,9 +178,9 @@
    : Assert: `encode' after `decode' yields sequence '12345345235' again:
    : True
 
-** TODO Funktion =gen_dict=
+** Funktion =next_dicts=
 
-   Die Funktion =gen_dict(d, lim)= generiert ausgehend von der
+   Die Funktion =next_dicts(d, lim)= generiert ausgehend von der
    Spielfolge in dem Dictionary =d= die Liste der Dictionaries über
    die nächsten =lim= Züge (Defaultwert für =d= ist das leere
    Spielfeld ={}= und 1 für =lim=).
@@ -197,42 +197,41 @@
    haben kann und maximal mit dem letzten Zug eine Spalte komplett
    gefüllt ist).
 
-   #+NAME: gen-dict-start
+   #+NAME: next-dicts-start
    #+BEGIN_SRC python :var n = 5
      print("Assert: Number of game sequences equals power of 7 for first %d moves." % n)
      for i in range(n):
-	 l = len(gen_dict(lim=i+1))
+	 l = len(next_dicts(lim=i+1))
 	 m = 7**(i+1)
-	 print("Moves:%2d #Sequences: %5d == 7^%d [%s]" % (i+1, l, i+1, l == m))
-
+	 print("Moves:%2d Sequences: %5d == 7^%d [%s]" % (i+1, l, i+1, l == m))
    #+END_SRC
 
-   #+RESULTS: gen-dict-start
+   #+RESULTS: next-dicts-start
    : Assert: Number of game sequences equals power of 7 for first 5 moves.
-   : Moves: 1 #Sequences:      7 == 7^1 [True]
-   : Moves: 2 #Sequences:     49 == 7^2 [True]
-   : Moves: 3 #Sequences:    343 == 7^3 [True]
-   : Moves: 4 #Sequences:   2401 == 7^4 [True]
-   : Moves: 5 #Sequences:  16807 == 7^5 [True]
+   : Moves: 1 #Sequences:     7 == 7^1 [True]
+   : Moves: 2 #Sequences:    49 == 7^2 [True]
+   : Moves: 3 #Sequences:   343 == 7^3 [True]
+   : Moves: 4 #Sequences:  2401 == 7^4 [True]
+   : Moves: 5 #Sequences: 16807 == 7^5 [True]
 
-   Die Funktion =gen_dict= kann mit einer Spielfolge =d= aufgerufen
+   Die Funktion =next_dicts= kann mit einer Spielfolge =d= aufgerufen
    werden und generiert dann ausgehend von diesem Stand mögliche
    Fortsetzungen. An folgendem Beispiel erkennt man, dass Spieler G
    mit einem Stein in der zweiten Spalte das Spiel gewinnen
    kann. Spielzüge, die zu einem Sieg führen, werden explizit
    ausgegeben.
 
-   #+NAME: gen-dict-contd
+   #+NAME: next-dicts-contd
    #+BEGIN_SRC python :var s = "343252356332" :var n = 2
      PLAYERS = { 0: 'R', 1: 'G' } # to suppress ASCII encoding
      print("Game sequences from '%s' (limited by %n moves):" % (s, n))
-     print(get_grid(s))
+     print(grid(s))
      d = decode(s)
-     l = gen_dict(d, lim=n)
+     l = next_dicts(d, lim=n)
      print(len(l))
    #+END_SRC
 
-   #+RESULTS: gen-dict-contd
+   #+RESULTS: next-dicts-contd
    #+begin_example
     |                     | 6
     |       R             | 5
@@ -250,8 +249,8 @@
    48
    #+end_example
 
-   Man sieht an der Ausgabe, dass bei zwei Folgezügen Spieler G
-   gewinnt durch einen vierten Stein in Spalte 2, dies aber nur, wenn
-   Spieler R dieses Feld nicht vorher besetzt. Insgesamt gibt es 48
-   Ergebnisse, da jede Spieler 7 Spalten besetzten kann, nur Spalte 2
+   Man sieht an der Ausgabe, dass bei zwei Folgezügen Spieler G mit
+   einen vierten Stein in Zeile 4 und Spalte 2 gewinnt. Dazu darf aber
+   Spieler R dieses Feld nicht vorher besetzen. Insgesamt gibt es 48
+   Ergebnisse, da jeder Spieler 7 Spalten besetzen kann, nur Spalte 2
    kann nicht von beiden Spielen genutzt werden.
