@@ -44,15 +44,17 @@ def decode(s):
         return dic
     else:
         for i in range(len(s)):
-            # TODO: check character in '1' to '7'?
             c = int(s[i]) - 1 # column index zero based
             p = i % 2 # player index starting with 0
             r = row.get(c, -1) # free row in column c
-            if 0 <= c < MAXCOLS and 0 <= r < MAXROWS:
+            if is_win(dic):
+                print("Sequence '%s' leads to win yet!" % s[:i])
+                return dic
+            elif 0 <= c < MAXCOLS and 0 <= r < MAXROWS:
                 dic[(r, c)] = p # add pos and player into dict
                 row[c] = r + 1 # increase row for column c
             else:
-                print("Move %d '%s' in sequence '%s' leads to invalid position (%d, %d)!" % (i, s[i], s, r, c))
+                print("Sequence '%s' leads to filled column %d yet!" % (s[:i], c+1))
                 return dic
     return dic
 
