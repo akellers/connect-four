@@ -95,20 +95,18 @@ def is_win(d):
     d: dict
     Returns: Boolean
     """
-    if len(d) < 7: return False # unsufficient number of moves
+    if len(d) < 7: return False # number of moves to low
 
-    # d = get_pos_dict(s)
     # row, column and player indices of last move
-    ((r, c), x) = next(reversed(list(d.items())))
+    ((r, c), x) = list(d.items())[-1]
 
     # vertical
-    if r >= 3:
-        b1 = (r-1,c) in d and d[(r-1,c)] == x
-        b2 = (r-2,c) in d and d[(r-2,c)] == x
-        b3 = (r-3,c) in d and d[(r-3,c)] == x
-        if b1 and b2 and b3:
-            print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
-            return True
+    b1 = (r-1,c) in d and d[(r-1,c)] == x
+    b2 = (r-2,c) in d and d[(r-2,c)] == x
+    b3 = (r-3,c) in d and d[(r-3,c)] == x
+    if b1 and b2 and b3:
+        print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
+        return True
     # diagonal (upwards)
     b0 = (r+3,c+3) in d and d[(r+3,c+3)] == x
     b1 = (r+2,c+2) in d and d[(r+2,c+2)] == x
@@ -152,7 +150,7 @@ def is_final(d):
     Returns: Boolean
 
     """
-    return is_win(d) or len(s) == MAXROWS * MAXCOLS
+    return is_win(d) or len(d) == MAXROWS * MAXCOLS
 
 # GENERATORS
 def gen_next(d):
