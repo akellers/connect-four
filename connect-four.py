@@ -64,89 +64,7 @@ def encode(d):
     """
     return ''.join([str(k[1]+1) for k in d.keys()])
 
-# GET FUNCTIONS
-# def get_player(s):
-
-#     """Returns the player index for last move in game sequence s. Player
-#     indices are zero based, starting with 0 for the first
-#     move. Returns None if s is empty.
-
-#     s: str
-#     Returns: int
-
-#     """
-#     if s == '':
-#         return None
-#     else:
-#         return (len(s) + 1) % 2
-
-# def get_col(s):
-#     """Returns the chosen column in last move in game sequence s. The
-#     column index is zero-based.
-
-#     s: str
-#     Returns: int
-
-#     """
-#     if s == '':
-#         return None
-#     else:
-#         return int(s[-1:]) - 1
-
-# def get_row(s):
-#     """Returns resulting row in move i from game sequence s. The row
-#     index is zero-based.
-
-#     s: str
-#     Returns: int
-#     """
-#     if s == '':
-#         return None
-#     else:
-#         l = len(s)
-#         return s.count(s[l-1], 0, l-1)
-
-# def get_pos(s):
-#     """Returns tuple with position (as tuple of row and column) and
-#     player of last move in game sequence s.
-
-#     s: str
-#     Returns: tuple of type ((int, int), int)
-#     """
-#     return ((get_row(s), get_col(s)), get_player(s))
-
-# def get_pos_list(s):
-#     """Return list with sequence of positions from game sequence s.
-
-#     s: str
-#     Returns: list of type ((int, int), str)
-#     TODO: Obsolete with get_pos_dict
-#     """
-#     return [get_pos(s[0:i]) for i in range(1, len(s)+1)]
-
-# def get_pos_dict(s):
-#     """Return dictionary with positions the players set by the game
-#     sequence s. Keys are positions as tuple of row and column, values
-#     are player indices.
-
-#     s: str
-#     Returns: dict with keys (int, int) and values int
-#     TODO: Obsolete with `decode`
-#     """
-#     dic = {}
-#     row = { i : 0 for i in range(MAXCOLS) }
-#     if s == '':
-#         return dic
-#     else:
-#         for i in range(len(s)):
-#             c = int(s[i]) - 1 # zero based
-#             p = i % 2
-#             r = row[c]
-#             dic[(r, c)] = p
-#             row[c] = r + 1
-#     return dic
-#     # return dict(get_pos_list(s))
-
+# PRINTABLE REPRESENTATION
 def get_grid(s):
     """Returns printable string representing the board after game
     sequence s. Moves are colored using ASCII encoding.
@@ -170,31 +88,7 @@ def get_grid(s):
         b += '-' + str(i+1) + '-'
     return p + ' +' + b + '+'
 
-#
-# Test Functions
-#
-# def is_valid(s, rec = False):
-#     """Returns True if last move in game sequences s is valid regarding
-#     number of columns and rows, i.e. the column exist and are yet not
-#     filled.
-
-#     With optional boolean parameter check validity recursivly.
-#     TODO: Obsolete. Validity is checked in `get_dict`
-
-#     s: str
-#     rec: Boolean (optional)
-#     Returns: Boolean
-
-#     """
-#     if len(s) == 0:
-#         return True
-#     else:
-#         b = get_col(s) < MAXCOLS and get_row(s) < MAXROWS
-#         if rec == True:
-#             return b and is_valid(s[:-1], rec)
-#         else:
-#             return b
-
+# TESTING
 def is_win(d):
     """Returns True if game dictionary d shows a win!
 
@@ -250,14 +144,6 @@ def is_win(d):
 
     return False
 
-# def is_draw(d):
-#     """Returns True if game dictionary d represents a draw.
-
-#     s: dict
-#     Returns: Boolean
-#     """
-#     return len(s) == MAXROWS * MAXCOLS and not is_win(s)
-
 def is_final(d):
     """Returns True if game dictionary is a win or no further move is
     possible because the board is filled.
@@ -268,9 +154,7 @@ def is_final(d):
     """
     return is_win(d) or len(s) == MAXROWS * MAXCOLS
 
-#
-# Generator Functions
-#
+# GENERATORS
 def gen_next(d):
     """Returns list with possible next tupels for game dictionary
     d. Tuples contain position and player. List may be empty if
@@ -316,54 +200,3 @@ def gen_dict(d = {}, lim = 1):
                 l.append(m)
                 ds.append(dict(l))
     return(rs)
-
-# def gen_next_cols(s):
-#     """Returns list of columns for moves after game sequence s. The list
-#     may be emtpy if no next move available.
-
-#     s: str
-#     Returns: list of type str
-
-#     TODO: Implement filtering on win here or elsewhere?
-
-#     """
-#     l = []
-#     for i in range(MAXCOLS):
-#         c = str(i+1)
-#         p = get_pos(s + c)
-#         if p[0][0] < MAXROWS: # column not yet filled!
-#             l.append(c)
-#     return l
-
-# def gen_next_seqs(s):
-#     """Returns list of next games sequences s by appending one move. The
-#     list may be emtpy if no next move available.
-
-#     s: str
-#     Returns: list
-
-#     """
-#     l = []
-#     for c in gen_next_cols(s):
-#         l.append(s + c)
-#     return l
-
-# def gen_game_seqs(s = '', lim = MAXROWS * MAXCOLS):
-#     """Returns list of all game sequences starting with s. Optional
-#     first argument allows setting of an initial game sequence. The
-#     number of generated moves can be limited by the named parameter.
-
-#     s: str (default is empty sequence '')
-#     lim: int (default is maximum number of moves)
-#     """
-#     xs = [s]
-#     ys = []
-#     ll = min(len(s) + lim, MAXROWS * MAXCOLS)
-#     while len(xs) > 0:
-#         x = xs[0]; xs = xs[1:]
-#         # sequence x final or limit reached?
-#         if is_final(x) or len(x) >= ll:
-#             ys.append(x)
-#         else:
-#             xs.extend(gen_next_seqs(x))
-#     return ys
