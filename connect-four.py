@@ -78,7 +78,7 @@ def grid(s):
     p = '' # the result string
     if isinstance(s, str):
         d = decode(s)
-    elif isisntance(s, dict):
+    elif isinstance(s, dict):
         d = s
     else:
         print("Argument '%s' is not a valid game sequence!" % s)
