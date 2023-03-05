@@ -179,31 +179,17 @@ def is_valid(s, rec = False):
 
     With optional boolean parameter check validity recursivly.
 
-    s: str
-    rec: Boolean (optional)
-    Returns: Boolean
+def is_win(d):
+    """Returns True if game dictionary d shows a win!
 
-    """
-    if len(s) == 0:
-        return True
-    else:
-        b = get_col(s) < MAXCOLS and get_row(s) < MAXROWS
-        if rec == True:
-            return b and is_valid(s[:-1], rec)
-        else:
-            return b
-
-def is_win(s):
-    """Returns True if game sequence s leads to a win!
-
-    s: str
+    d: dict
     Returns: Boolean
     """
-    if len(s) < 7: return False # unsufficient number of moves
+    if len(d) < 7: return False # unsufficient number of moves
 
-    d = get_pos_dict(s)
+    # d = get_pos_dict(s)
     # row, column and player indices of last move
-    ((r, c), x) = next(reversed(d.items()))
+    ((r, c), x) = next(reversed(list(d.items())))
 
     # vertical
     if r >= 3:
@@ -211,7 +197,7 @@ def is_win(s):
         b2 = (r-2,c) in d and d[(r-2,c)] == x
         b3 = (r-3,c) in d and d[(r-3,c)] == x
         if b1 and b2 and b3:
-            print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[1], r+1, c+1, s))
+            print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
             return True
     # diagonal (upwards)
     b0 = (r+3,c+3) in d and d[(r+3,c+3)] == x
@@ -221,7 +207,7 @@ def is_win(s):
     b4 = (r-2,c-2) in d and d[(r-2,c-2)] == x
     b5 = (r-3,c-3) in d and d[(r-3,c-3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
+        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
 
     # diagonal (downwards)
@@ -232,7 +218,7 @@ def is_win(s):
     b4 = (r-2,c+2) in d and d[(r-2,c+2)] == x
     b5 = (r-3,c+3) in d and d[(r-3,c+3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
+        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
 
     # check horizontal (from left to right)
@@ -243,7 +229,7 @@ def is_win(s):
     b4 = (r,c+2) in d and d[(r,c+2)] == x
     b5 = (r,c+3) in d and d[(r,c+3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Horizontal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, s))
+        print("%s wins! Horizontal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
 
     return False
