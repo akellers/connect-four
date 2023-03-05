@@ -191,14 +191,67 @@
    Spielfolge ist maximal 42 Spielzüge lang.
 
    Beginnend mit einem leeren Feld gibt es z.B. über die ersten 3
-   Spielzüge genau $7^3 = 343$ unterschiedliche Spielfolgen:
+   Spielzüge genau $7^3 = 343$ unterschiedliche
+   Spielfolgen. Allgemeiner: Für die ersten $n$ Züge mit $n <= 6$ gibt
+   es $7^n$ Zugfolgen (da mangels Zügen noch kein Spieler gewonnnen
+   haben kann und maximal mit dem letzten Zug eine Spalte komplett
+   gefüllt ist).
 
    #+NAME: gen-dict-start
-   #+BEGIN_SRC python
-    print("Assert: There are 343 different game sequences for the first 3 moves.")
-    print(len(gen_dict(lim=3)))
+   #+BEGIN_SRC python :var n = 5
+     print("Assert: Number of game sequences equals power of 7 for first %d moves." % n)
+     for i in range(n):
+	 l = len(gen_dict(lim=i+1))
+	 m = 7**(i+1)
+	 print("Moves:%2d #Sequences: %5d == 7^%d [%s]" % (i+1, l, i+1, l == m))
+
    #+END_SRC
 
    #+RESULTS: gen-dict-start
-   : Assert: There are 343 different game sequences for the first 3 moves.
-   : 343
+   : Assert: Number of game sequences equals power of 7 for first 5 moves.
+   : Moves: 1 #Sequences:      7 == 7^1 [True]
+   : Moves: 2 #Sequences:     49 == 7^2 [True]
+   : Moves: 3 #Sequences:    343 == 7^3 [True]
+   : Moves: 4 #Sequences:   2401 == 7^4 [True]
+   : Moves: 5 #Sequences:  16807 == 7^5 [True]
+
+   Die Funktion =gen_dict= kann mit einer Spielfolge =d= aufgerufen
+   werden und generiert dann ausgehend von diesem Stand mögliche
+   Fortsetzungen. An folgendem Beispiel erkennt man, dass Spieler G
+   mit einem Stein in der zweiten Spalte das Spiel gewinnen
+   kann. Spielzüge, die zu einem Sieg führen, werden explizit
+   ausgegeben.
+
+   #+NAME: gen-dict-contd
+   #+BEGIN_SRC python :var s = "343252356332" :var n = 2
+     PLAYERS = { 0: 'R', 1: 'G' } # to suppress ASCII encoding
+     print("Game sequences from '%s' (limited by %n moves):" % (s, n))
+     print(get_grid(s))
+     d = decode(s)
+     l = gen_dict(d, lim=n)
+     print(len(l))
+   #+END_SRC
+
+   #+RESULTS: gen-dict-contd
+   #+begin_example
+    |                     | 6
+    |       R             | 5
+    |       G             | 4
+    |    G  R             | 3
+    |    G  R     G       | 2
+    |    G  R  G  R  R    | 1
+    +-1--2--3--4--5--6--7-+
+   G wins! Vertical at (4, 2) [34325235633272].
+   G wins! Vertical at (4, 2) [34325235633262].
+   G wins! Vertical at (4, 2) [34325235633252].
+   G wins! Vertical at (4, 2) [34325235633242].
+   G wins! Vertical at (4, 2) [34325235633232].
+   G wins! Vertical at (4, 2) [34325235633212].
+   48
+   #+end_example
+
+   Man sieht an der Ausgabe, dass bei zwei Folgezügen Spieler G
+   gewinnt durch einen vierten Stein in Spalte 2, dies aber nur, wenn
+   Spieler R dieses Feld nicht vorher besetzt. Insgesamt gibt es 48
+   Ergebnisse, da jede Spieler 7 Spalten besetzten kann, nur Spalte 2
+   kann nicht von beiden Spielen genutzt werden.
