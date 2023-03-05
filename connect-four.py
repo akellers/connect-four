@@ -271,14 +271,29 @@ def is_final(d):
 #
 # Generator Functions
 #
-def gen_next_cols(s):
-    """Returns list of columns for moves after game sequence s. The list
-    may be emtpy if no next move available.
+def gen_next(d):
+    """Returns list with possible next tupels for game dictionary
+    d. Tuples contain position and player. List may be empty if
+    there is no next move.
 
-    s: str
-    Returns: list of type str
+    d: dict of type ((int, int), int)
+    Returns: list of type ((int, int), int)
 
-    TODO: Implement filtering on win here or elsewhere?
+    """
+    l = [] # result list
+    p = len(d) % 2 # player for next move
+    # iterate over columns
+    k = d.keys()
+    for c in range(MAXCOLS):
+        r = 0 # initial row
+        # positions in column c?
+        ps = filter(lambda t: t[1] == c, d.keys())
+        for t in ps:
+            r = max(t[0]+1, r)
+        if r < MAXROWS:
+            l.append(((r, c), 1))
+    return(l)
+
 
     """
     l = []
