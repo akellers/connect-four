@@ -4,7 +4,6 @@
 #+OPTIONS: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+TITLE: Vier Gewinnt
-#+DATE: <2023-02-21 Di>
 #+AUTHOR: Andreas Kellers
 #+EMAIL: andreas.kellers@gmail.com
 #+LANGUAGE: de
