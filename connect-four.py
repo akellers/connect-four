@@ -242,15 +242,15 @@ def is_draw(s):
     """
     return len(s) == MAXROWS * MAXCOLS and not is_win(s)
 
-def is_final(s):
-    """Returns True if last move in game sequence s leads to a win or a
-    draw, i.e. to four connected positions for one player (win) or no
-    moves left (draw).
+def is_final(d):
+    """Returns True if game dictionary is a win or no further move is
+    possible because the board is filled.
 
-    s: str
+    s: dict
     Returns: Boolean
+
     """
-    return is_win(s) or is_draw(s)
+    return is_win(d) or len(s) == MAXROWS * MAXCOLS
 
 #
 # Generator Functions
