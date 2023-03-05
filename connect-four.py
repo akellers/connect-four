@@ -65,86 +65,87 @@ def encode(d):
     return ''.join([str(k[1]+1) for k in d.keys()])
 
 # GET FUNCTIONS
-def get_player(s):
-    """Returns the player index for last move in game sequence s. Player
-    indices are zero based, starting with 0 for the first
-    move. Returns None if s is empty.
+# def get_player(s):
 
-    s: str
-    Returns: int
+#     """Returns the player index for last move in game sequence s. Player
+#     indices are zero based, starting with 0 for the first
+#     move. Returns None if s is empty.
 
-    """
-    if s == '':
-        return None
-    else:
-        return (len(s) + 1) % 2
+#     s: str
+#     Returns: int
 
-def get_col(s):
-    """Returns the chosen column in last move in game sequence s. The
-    column index is zero-based.
+#     """
+#     if s == '':
+#         return None
+#     else:
+#         return (len(s) + 1) % 2
 
-    s: str
-    Returns: int
+# def get_col(s):
+#     """Returns the chosen column in last move in game sequence s. The
+#     column index is zero-based.
 
-    """
-    if s == '':
-        return None
-    else:
-        return int(s[-1:]) - 1
+#     s: str
+#     Returns: int
 
-def get_row(s):
-    """Returns resulting row in move i from game sequence s. The row
-    index is zero-based.
+#     """
+#     if s == '':
+#         return None
+#     else:
+#         return int(s[-1:]) - 1
 
-    s: str
-    Returns: int
-    """
-    if s == '':
-        return None
-    else:
-        l = len(s)
-        return s.count(s[l-1], 0, l-1)
+# def get_row(s):
+#     """Returns resulting row in move i from game sequence s. The row
+#     index is zero-based.
 
-def get_pos(s):
-    """Returns tuple with position (as tuple of row and column) and
-    player of last move in game sequence s.
+#     s: str
+#     Returns: int
+#     """
+#     if s == '':
+#         return None
+#     else:
+#         l = len(s)
+#         return s.count(s[l-1], 0, l-1)
 
-    s: str
-    Returns: tuple of type ((int, int), int)
-    """
-    return ((get_row(s), get_col(s)), get_player(s))
+# def get_pos(s):
+#     """Returns tuple with position (as tuple of row and column) and
+#     player of last move in game sequence s.
 
-def get_pos_list(s):
-    """Return list with sequence of positions from game sequence s.
+#     s: str
+#     Returns: tuple of type ((int, int), int)
+#     """
+#     return ((get_row(s), get_col(s)), get_player(s))
 
-    s: str
-    Returns: list of type ((int, int), str)
-    TODO: Obsolete with get_pos_dict
-    """
-    return [get_pos(s[0:i]) for i in range(1, len(s)+1)]
+# def get_pos_list(s):
+#     """Return list with sequence of positions from game sequence s.
 
-def get_pos_dict(s):
-    """Return dictionary with positions the players set by the game
-    sequence s. Keys are positions as tuple of row and column, values
-    are player indices.
+#     s: str
+#     Returns: list of type ((int, int), str)
+#     TODO: Obsolete with get_pos_dict
+#     """
+#     return [get_pos(s[0:i]) for i in range(1, len(s)+1)]
 
-    s: str
-    Returns: dict with keys (int, int) and values int
-    TODO: Obsolete with get_decoding
-    """
-    dic = {}
-    row = { i : 0 for i in range(MAXCOLS) }
-    if s == '':
-        return dic
-    else:
-        for i in range(len(s)):
-            c = int(s[i]) - 1 # zero based
-            p = i % 2
-            r = row[c]
-            dic[(r, c)] = p
-            row[c] = r + 1
-    return dic
-    # return dict(get_pos_list(s))
+# def get_pos_dict(s):
+#     """Return dictionary with positions the players set by the game
+#     sequence s. Keys are positions as tuple of row and column, values
+#     are player indices.
+
+#     s: str
+#     Returns: dict with keys (int, int) and values int
+#     TODO: Obsolete with `decode`
+#     """
+#     dic = {}
+#     row = { i : 0 for i in range(MAXCOLS) }
+#     if s == '':
+#         return dic
+#     else:
+#         for i in range(len(s)):
+#             c = int(s[i]) - 1 # zero based
+#             p = i % 2
+#             r = row[c]
+#             dic[(r, c)] = p
+#             row[c] = r + 1
+#     return dic
+#     # return dict(get_pos_list(s))
 
 def get_grid(s):
     """Returns printable string representing the board after game
@@ -172,12 +173,27 @@ def get_grid(s):
 #
 # Test Functions
 #
-def is_valid(s, rec = False):
-    """Returns True if last move in game sequences s is valid regarding
-    number of columns and rows, i.e. the column exist and are yet not
-    filled.
+# def is_valid(s, rec = False):
+#     """Returns True if last move in game sequences s is valid regarding
+#     number of columns and rows, i.e. the column exist and are yet not
+#     filled.
 
-    With optional boolean parameter check validity recursivly.
+#     With optional boolean parameter check validity recursivly.
+#     TODO: Obsolete. Validity is checked in `get_dict`
+
+#     s: str
+#     rec: Boolean (optional)
+#     Returns: Boolean
+
+#     """
+#     if len(s) == 0:
+#         return True
+#     else:
+#         b = get_col(s) < MAXCOLS and get_row(s) < MAXROWS
+#         if rec == True:
+#             return b and is_valid(s[:-1], rec)
+#         else:
+#             return b
 
 def is_win(d):
     """Returns True if game dictionary d shows a win!
@@ -234,13 +250,13 @@ def is_win(d):
 
     return False
 
-def is_draw(s):
-    """Returns True if game sequence s leads to a draw.
+# def is_draw(d):
+#     """Returns True if game dictionary d represents a draw.
 
-    s: str
-    Returns: Boolena
-    """
-    return len(s) == MAXROWS * MAXCOLS and not is_win(s)
+#     s: dict
+#     Returns: Boolean
+#     """
+#     return len(s) == MAXROWS * MAXCOLS and not is_win(s)
 
 def is_final(d):
     """Returns True if game dictionary is a win or no further move is
