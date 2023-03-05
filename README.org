@@ -23,15 +23,14 @@
 
 * Einführung
 
-  *Connect four* (oder im Deutschen *Vier Gewinnt* ist ein
-  Strategiespiel für zwei Spieler. Das Spielfeld besteht aus einem
-  Gitter mit 7 Spalten (senkrecht) und 6 Reihen (waagerecht). Das
-  Spielfeld steht aufrecht. Das Setzen der Steine kann nur in der
-  nächsten freien Reihe erfolgen. Die Spieler setzen abwechselnd
-  jeweils einen Spielstein (in klassisch in den Farben /Rot/ und
-  /Gelb/). Ziel ist es, eine Reihe von 4 Steinen in der eigenen Farbe
-  zu setzen. Dies kann senkrecht, waagerecht oder auch diagonal
-  erfolgen.
+  *Connect four* (im Deutschen *Vier Gewinnt*) ist ein Strategiespiel
+  für zwei Spieler. Das Spielfeld besteht aus einem Gitter mit 7
+  Spalten (senkrecht) und 6 Reihen (waagerecht). Das Spielfeld steht
+  aufrecht. Das Setzen der Steine kann nur in der nächsten freien
+  Reihe erfolgen. Die Spieler setzen abwechselnd jeweils einen
+  Spielstein (klassisch in den Farben /Rot/ und /Gelb/). Ziel ist
+  es, eine Reihe von 4 Steinen in der eigenen Farbe zu setzen. Dies
+  kann senkrecht, waagerecht oder auch diagonal erfolgen.
 
   Es besteht jeweils abwechselnd Zugzwang. Die Steine können beliebig
   in eine der Spalten platziert werden (sofern noch nicht bis zur
@@ -79,15 +78,13 @@
        $L$ bis zum Zug $l_i$. Die Zeile ist dann die Anzahl der
        Elemente $l_j$ in $L'$ mit $l_i = l_j$.
 
-
-
 * Implementierung
   :PROPERTIES:
-  :header-args:python:   :results output :python python3.7 -i 'src/connect-four.py' :exports both
+  :header-args:python:   :results output :python python3.7 -i 'connect-four.py' :exports both
   :END:
 
   Die Implementierung in =Python= erfolgt in dem Skript
-  [[file:src/connect-four.py]]. Nachfolgende Beispiele verwenden das
+  [[file:connect-four.py]]. Nachfolgende Beispiele verwenden das
   Skript und zeigen den jeweiligen Output.
 
   Für die Kodierung der Spielverläufe als Liste von Spaltenindizes
@@ -121,12 +118,13 @@
 ** Funktion =decode=
 
    Die Funktion =get_grid(s)= nutzt intern ein Dictionary (Typ
-   =dict=). Schlüssel für dieses Dictionary sind dabei die (besetzten)
-   Positionen. Die Werte (Values) sind dabei die Spieler-Indizes. Die
-   Positionen sind Tupel vom Typ =(int, int)=, Spieler sind =0= oder
-   =1=. Hierbei ist zu beachten, dass die Werte für Zeilen und Spalten
-   0-basiert sind, d.h. auf dem klassischen Spielfeld mit 6 Zeilen und
-   7 Spalten git es Positionen von =(0, 0)= bis =(5, 6)=.
+   =dict=). Schlüssel (Keys) für dieses Dictionary sind dabei die
+   (besetzten) Positionen. Hierbei ist zu beachten, dass die Werte für
+   Zeilen und Spalten 0-basiert sind, d.h. auf dem klassischen
+   Spielfeld mit 6 Zeilen und 7 Spalten git es Positionen von =(0, 0)=
+   bis =(5, 6)=. Die Werte (Values) sind die Spieler-Indizes. Die
+   Positionen sind Tupel (Zeile, Spalte) mit Typ =(int, int)=, Spieler
+   sind =0= oder =1=.
 
    Die Funktion =decode= wandelt eine Zeichenkette =s= mit einer
    Zugfolge in ein entsprechendes Dictionary um. Hierbei wird
@@ -150,16 +148,16 @@
 ** Function =encode=
 
    Die Funktion ist das Pendant zu =decode= und wandelt ein Dictionary
-   mit den Positionen und Spielern um eine Zeichenkette mit der Folge
-   der gewählten Spalten.
+   mit den Positionen und Spielern um in eine Zeichenkette mit der
+   Folge der gewählten Spalten.
 
    Mit dem =dict= aus dem obigen Beispiel liefert die Funktion wieder
-   die Zeichenkette ='3222134'=:
+   die Zeichenkette ='322134'=:
 
    #+NAME: encode
    #+BEGIN_SRC python :var d = "{(0, 2): 0, (0, 1): 1, (1, 1): 0, (0, 0): 1, (1, 2): 0, (0, 3): 1}"
     d = eval(d) # conversion into dict type
-    print("Game sequence for dictionary '%s':" % d)
+    print("Game sequence for '%s':" % d)
     print(encode(d))
    #+END_SRC
 
@@ -172,8 +170,8 @@
 
    #+NAME: decode-encode
    #+BEGIN_SRC python :var s = "12345345235"
-    print("Assert `encode' after `decode' yields sequence '%s' again:" % s)
-    print(encode(decode(s)) == s)
+     print("Assert: `encode' after `decode' yields sequence '%s' again:" % s)
+     print(encode(decode(s)) == s)
    #+END_SRC
 
    #+RESULTS: decode-encode
