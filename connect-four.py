@@ -294,45 +294,76 @@ def gen_next(d):
             l.append(((r, c), 1))
     return(l)
 
+def gen_dict(d = {}, lim = 1):
+    """Returns list of all possible game dictionaries starting with d. The
+    maximum number of moves is limited by the optional parameter.
+
+    d: dict of type ((int, int, int)
+    Returns: list of dict with type ((int, int), int)
 
     """
-    l = []
-    for i in range(MAXCOLS):
-        c = str(i+1)
-        p = get_pos(s + c)
-        if p[0][0] < MAXROWS: # column not yet filled!
-            l.append(c)
-    return l
-
-def gen_next_seqs(s):
-    """Returns list of next games sequences s by appending one move. The
-    list may be emtpy if no next move available.
-
-    s: str
-    Returns: list
-
-    """
-    l = []
-    for c in gen_next_cols(s):
-        l.append(s + c)
-    return l
-
-def gen_game_seqs(s = '', lim = MAXROWS * MAXCOLS):
-    """Returns list of all game sequences starting with s. Optional
-    first argument allows setting of an initial game sequence. The
-    number of generated moves can be limited by the named parameter.
-
-    s: str (default is empty sequence '')
-    lim: int (default is maximum number of moves)
-    """
-    xs = [s]
-    ys = []
-    ll = min(len(s) + lim, MAXROWS * MAXCOLS)
-    while len(xs) > 0:
-        x = xs[0]; xs = xs[1:]
-        # sequence x final or limit reached?
-        if is_final(x) or len(x) >= ll:
-            ys.append(x)
+    ds = [d] # start list
+    rs = [] # result list
+    ll = min(len(d) + lim, MAXROWS * MAXCOLS)
+    while len(ds) > 0:
+        x = ds.pop()
+        # TODO: replace encode step here
+        if len(x) >= ll or is_final(x):
+            rs.append(x)
         else:
-            xs.extend(gen_next_seqs(x))
-    return ys
+            for m in gen_next(x):
+                l = list(x.items())
+                l.append(m)
+                ds.append(dict(l))
+    return(rs)
+
+# def gen_next_cols(s):
+#     """Returns list of columns for moves after game sequence s. The list
+#     may be emtpy if no next move available.
+
+#     s: str
+#     Returns: list of type str
+
+#     TODO: Implement filtering on win here or elsewhere?
+
+#     """
+#     l = []
+#     for i in range(MAXCOLS):
+#         c = str(i+1)
+#         p = get_pos(s + c)
+#         if p[0][0] < MAXROWS: # column not yet filled!
+#             l.append(c)
+#     return l
+
+# def gen_next_seqs(s):
+#     """Returns list of next games sequences s by appending one move. The
+#     list may be emtpy if no next move available.
+
+#     s: str
+#     Returns: list
+
+#     """
+#     l = []
+#     for c in gen_next_cols(s):
+#         l.append(s + c)
+#     return l
+
+# def gen_game_seqs(s = '', lim = MAXROWS * MAXCOLS):
+#     """Returns list of all game sequences starting with s. Optional
+#     first argument allows setting of an initial game sequence. The
+#     number of generated moves can be limited by the named parameter.
+
+#     s: str (default is empty sequence '')
+#     lim: int (default is maximum number of moves)
+#     """
+#     xs = [s]
+#     ys = []
+#     ll = min(len(s) + lim, MAXROWS * MAXCOLS)
+#     while len(xs) > 0:
+#         x = xs[0]; xs = xs[1:]
+#         # sequence x final or limit reached?
+#         if is_final(x) or len(x) >= ll:
+#             ys.append(x)
+#         else:
+#             xs.extend(gen_next_seqs(x))
+#     return ys
