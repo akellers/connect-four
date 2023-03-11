@@ -73,7 +73,7 @@ def grid(s):
     """Returns printable string representing the board after game
     sequence s (or dictionary). Moves are colored using ASCII encoding.
 
-    s: str
+    s: str or dict
     Returns: str
 
     """
