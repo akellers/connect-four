@@ -23,9 +23,11 @@ MAXCOLS = 7
 # ASCII encoded characters for the players
 PLAYER1 = '\033[1;31;40mR\033[0;37;40m' # red on black
 PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
-PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
 # '\033[1;32;40mG\033[0;37;40m' # green on black
 # '\033[1;33;40mG\033[0;37;40m' # yellow on black
+PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
+# Default verbosity
+VERBOSE = True
 
 # ENCODING/DECODING
 def decode(s):
@@ -98,11 +100,14 @@ def grid(s):
     return p + ' +' + b + '+'
 
 # TESTING
-def is_win(d):
-    """Returns True if game dictionary d shows a win!
+def is_win(d, verbose=VERBOSE):
+    """Returns True if game dictionary d shows a win. Prints information
+    about win if optional parameter 'verbose' is set to 'True'.
 
     d: dict
-    Returns: Boolean
+    verbose: bool
+    Returns: bool
+
     """
     if len(d) < 7: return False # number of moves to low
 
@@ -114,7 +119,8 @@ def is_win(d):
     b2 = (r-2,c) in d and d[(r-2,c)] == x
     b3 = (r-3,c) in d and d[(r-3,c)] == x
     if b1 and b2 and b3:
-        print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
+        if verbose:
+            print("%s wins! Vertical at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
     # diagonal (upwards)
     b0 = (r+3,c+3) in d and d[(r+3,c+3)] == x
@@ -124,7 +130,8 @@ def is_win(d):
     b4 = (r-2,c-2) in d and d[(r-2,c-2)] == x
     b5 = (r-3,c-3) in d and d[(r-3,c-3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
+        if verbose:
+            print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d))) 
         return True
 
     # diagonal (downwards)
@@ -135,7 +142,8 @@ def is_win(d):
     b4 = (r-2,c+2) in d and d[(r-2,c+2)] == x
     b5 = (r-3,c+3) in d and d[(r-3,c+3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
+        if verbose:
+            print("%s wins! Diagonal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
 
     # check horizontal (from left to right)
@@ -146,20 +154,21 @@ def is_win(d):
     b4 = (r,c+2) in d and d[(r,c+2)] == x
     b5 = (r,c+3) in d and d[(r,c+3)] == x
     if (b0 and b1 and b2) or (b1 and b2 and b3) or (b2 and b3 and b4) or (b3 and b4 and b5):
-        print("%s wins! Horizontal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
+        if verbose:
+            print("%s wins! Horizontal at (%d, %d) [%s]." % (PLAYERS[x], r+1, c+1, encode(d)))
         return True
 
     return False
 
-def is_final(d):
+def is_final(d, verbose=VERBOSE):
     """Returns True if game dictionary is a win or no further move is
     possible because the board is filled.
 
     s: dict
-    Returns: Boolean
+    Returns: bool
 
     """
-    return is_win(d) or len(d) == MAXROWS * MAXCOLS
+    return is_win(d, verbose=verbose) or len(d) == MAXROWS * MAXCOLS
 
 # GENERATORS
 def next_moves(d):
@@ -184,24 +193,42 @@ def next_moves(d):
             l.append(((r, c), p))
     return(l)
 
-def next_dicts(d = {}, lim = 1):
+def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     """Returns list of all possible game dictionaries starting with d. The
-    maximum number of moves is limited by the optional parameter.
+    number of additional moves is limited by the optional
+    parameter. Prints additional information about wins if optional
+    paramter 'verbose' is set to 'True'. With optional parameter
+    out=filename results are written to filname (in string encoding).
 
     d: dict of type ((int, int, int)
+    lim: int (defaults to 1)
+    verbose: bool
+
     Returns: list of dict with type ((int, int), int)
 
     """
     ds = [d] # start list
-    rs = [] # result list
+    if not out == None:
+        fn = open(out, 'w')
+    else:
+        rs = [] # result list
+
     ll = min(len(d) + lim, MAXROWS * MAXCOLS)
     while len(ds) > 0:
         x = ds.pop()
-        if is_final(x) or len(x) >= ll:
-            rs.append(x)
+        f = is_final(x, verbose=verbose)
+        if f or len(x) >= ll:
+            if out == None:
+                rs.append(x)
+            else:
+                fn.write("%s [Final: %s, Player: %d]\n" % (encode(x), f, len(x) % 2))
         else:
             for (po, pl) in next_moves(x):
                 dc = x.copy()
                 dc[po] = pl
                 ds.append(dc)
-    return(rs)
+    if out == None:
+        return(rs)
+    else:
+        fn.close
+
