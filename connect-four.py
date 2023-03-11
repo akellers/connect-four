@@ -232,3 +232,37 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     else:
         fn.close
 
+# PLAYING
+def play(d = {}):
+    """Starts an interactive game play starting with dictionary d. The
+    game can be terminated by entering 'q' or 'Q'.
+
+    d = dict of type ((int, int), int)
+    Returns: dict
+
+    """
+    while not is_final(d, verbose=True):
+        p = len(d) % 2 # player index
+        print('\n' + grid(d))
+        ms = next_moves(d)
+        val = False # valid input
+        brk = False
+        while not val:
+            ch = input('Enter column, Player %s: ' % PLAYERS[p])
+            if ch in ['q', 'Q']:
+                brk = True
+                val = True
+            elif ch in [str(i+1) for i in range(MAXCOLS)]:
+                c = int(ch)-1
+                m = next((m for m in ms if m[0][1] == c), None)
+                if m == None:
+                    print("Column '%s' not allowed!" % ch)
+                else:
+                    val = True
+            else:
+                print("Invalid input '%s'!" % ch)
+        if brk:
+            break
+        else:
+            d[m[0]] = m[1]
+    return d
