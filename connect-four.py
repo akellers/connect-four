@@ -174,7 +174,6 @@ def next_moves(d):
     l = [] # result list
     p = len(d) % 2 # player for next move
     # iterate over columns
-    k = d.keys()
     for c in range(MAXCOLS):
         r = 0 # initial row
         # positions in column c?
