@@ -200,11 +200,12 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     paramter 'verbose' is set to 'True'. With optional parameter
     out=filename results are written to filname (in string encoding).
 
-    d: dict of type ((int, int, int)
+    d: dict of type ((int, int, int) (defaults to {})
     lim: int (defaults to 1)
-    verbose: bool
+    out: str (defaults to None)
+    verbose: bool (defaults to false)
 
-    Returns: list of dict with type ((int, int), int)
+    Returns: list of dicts with type ((int, int), int)
 
     """
     ds = [d] # start list
