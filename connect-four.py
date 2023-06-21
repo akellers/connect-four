@@ -2,7 +2,7 @@
 # Python implementation of the Connect Four-Game
 #
 # File: connect-four.py
-# Date: 2023-03-05
+# Date: 2023-06-21
 #
 # General idea: Connect Four can be understood as sequence of
 # moves. These game sequence can be encoded as string where each
@@ -218,11 +218,13 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     while len(ds) > 0:
         x = ds.pop()
         f = is_final(x, verbose=verbose)
+        w = is_win(x, verbose=verbose)
         if f or len(x) >= ll:
             if out == None:
                 rs.append(x)
             else:
-                fn.write("%s [Final: %s, Player: %d]\n" % (encode(x), f, len(x) % 2))
+                # Writes encoded grid, and array with is final, is win and last player number (1 or 2)
+                fn.write("%s [final: %s, win: %s, player: %d]\n" % (encode(x), f, w, 2 - (len(x) % 2)))
         else:
             for (po, pl) in next_moves(x):
                 dc = x.copy()
