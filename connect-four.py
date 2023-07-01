@@ -27,7 +27,7 @@ PLAYER2 = '\033[1;34;40mB\033[0;37;40m' # blue on black
 # '\033[1;33;40mG\033[0;37;40m' # yellow on black
 PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
 # Default verbosity
-VERBOSE = True
+VERBOSE = False
 
 # ENCODING/DECODING
 def decode(s):
@@ -97,7 +97,8 @@ def grid(s):
     b = '' # bottom line
     for i in range(MAXCOLS):
         b += '-' + str(i+1) + '-'
-    return p + ' +' + b + '+'
+    h = '\nNext turn: ' + PLAYERS[len(d)%2] 
+    return p + ' +' + b + '+' + h
 
 # TESTING
 def is_win(d, verbose=VERBOSE):
@@ -200,19 +201,18 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     paramter 'verbose' is set to 'True'. With optional parameter
     out=filename results are written to filname (in string encoding).
 
-    d: dict of type ((int, int, int) (defaults to {})
+    d: dict of type ((int, int), int) (defaults to {})
     lim: int (defaults to 1)
     out: str (defaults to None)
-    verbose: bool (defaults to false)
+    verbose: bool (defaults to True)
 
     Returns: list of dicts with type ((int, int), int)
 
     """
     ds = [d] # start list
+    rs = [] # result list
     if not out == None:
         fn = open(out, 'w')
-    else:
-        rs = [] # result list
 
     ll = min(len(d) + lim, MAXROWS * MAXCOLS)
     while len(ds) > 0:
@@ -220,9 +220,8 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
         f = is_final(x, verbose=verbose)
         w = is_win(x, verbose=verbose)
         if f or len(x) >= ll:
-            if out == None:
-                rs.append(x)
-            else:
+            rs.append(x)
+            if not out == None:
                 # Writes encoded grid, and array with is final, is win and last player number (1 or 2)
                 fn.write("%s [final: %s, win: %s, player: %d]\n" % (encode(x), f, w, 2 - (len(x) % 2)))
         else:
