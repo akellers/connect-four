@@ -277,22 +277,28 @@ def best_moves(d = {}, lim=4):
     return moves
         
 # PLAYING
-def play(d = {}):
-    """Starts an interactive game play starting with dictionary d. The
-    game can be terminated by entering 'q' or 'Q'.
+def play(d = {}, auto=[]):
+    """Starts an interactive game play starting with game dictionary
+    `d`. The game can be terminated by entering 'q' or 'Q'. Moves for
+    players in `auto` are automatically chosen.
 
-    d: dict of type ((int, int), int)
-    Returns: dict
+    d: dict of type {(int, int), int} (defaults to {})
+    auto: list of type int (defaults to []
+
+    Returns: dict of type { (int, int): int }
 
     """
     while not is_final(d, verbose=True):
         p = len(d) % 2 # player index
-        print('\n' + grid(d))
+        print('\n' + str(grid(d)))
         ms = next_moves(d)
         val = False # valid input
         brk = False
         while not val:
-            ch = input('Enter column, Player %s: ' % PLAYERS[p])
+            if p in auto:
+                ch = str(best_moves(d)[0][0][0][1]+1)
+            else:
+                ch = input(' Enter column, Player %s: ' % PLAYERS[p])
             if ch in ['q', 'Q']:
                 brk = True
                 val = True
