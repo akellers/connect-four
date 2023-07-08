@@ -229,10 +229,10 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
                 dc = x.copy()
                 dc[po] = pl
                 ds.append(dc)
-    if out == None:
-        return(rs)
-    else:
+    if not out == None:
         fn.close
+    return(rs)
+
 
 # PLAYING
 def play(d = {}):
