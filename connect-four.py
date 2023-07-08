@@ -14,7 +14,7 @@
 # respective player index (0 or 1).
 #
 # Note: The `encode' function relies on the fact that Python
-# dictionaries preserve insertion (since version 3.7)
+# dictionaries preserve insertion order (since version 3.7)
 #
 
 # CONSTANTS
@@ -97,7 +97,7 @@ def grid(s):
     b = '' # bottom line
     for i in range(MAXCOLS):
         b += '-' + str(i+1) + '-'
-    h = '\nNext turn: ' + PLAYERS[len(d)%2] 
+    h = '\n Next turn: ' + PLAYERS[len(d)%2] 
     return p + ' +' + b + '+' + h
 
 # TESTING
