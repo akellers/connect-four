@@ -234,12 +234,54 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     return(rs)
 
 
+# VALUATION
+def best_moves(d = {}, lim=4):
+    """Return a list of optimal next move(s) for next player for game with
+    dictionary d. The algorithm looks upto lim moves ahead and regards
+    all possible wins and losses. The list elements are tuples of
+    elements of `next_moves` and and integer score. The list is
+    ordered by descending score. A higher score indicates moves which
+    either lead to a win or prevent losses.
+
+    d: dict of type ((int, int), int)
+    lim: int (defaults to 4)
+
+    Returns: list of type (((int, int), int), int)
+
+    """
+    length = len(d)
+    # dict with moves and priorities
+    values = { m : 0 for m in next_moves(d) }
+    # all next win dicts up to 'lim'
+    ndicts = [ n for n in next_dicts(d, lim=lim, verbose=False) if is_win(n) ]
+    final  = False # break condition
+    ahead  = 1 # look ahead
+    while not final and ahead <= lim:
+        # win dicts with len = look ahead
+        dl = [ m for m in ndicts if len(m)-length == ahead ]
+        print("Look ahead = %d, no. of games: %d" % (ahead, len(dl)))
+        while len(dl) > 0:
+            cd = dl.pop()
+            cm = list(cd.items())[length] # current move
+            if ahead % 2 == 1: # current player wins
+                # result.append(encode(cd)[length:] + "+")
+                values[cm] += 1
+            else: # current player loses
+                # result.append(encode(cd)[length:] + "-")
+                values[cm] -= 1
+            final = True
+        ahead += 1
+
+    moves = sorted(list(values.items()), key=lambda kv: kv[1], reverse=True)
+    print("Best moves: " + ' '.join([ str(e[0][0][1]+1) + '(' + str(e[1]) + ')' for e in moves ]))
+    return moves
+        
 # PLAYING
 def play(d = {}):
     """Starts an interactive game play starting with dictionary d. The
     game can be terminated by entering 'q' or 'Q'.
 
-    d = dict of type ((int, int), int)
+    d: dict of type ((int, int), int)
     Returns: dict
 
     """
