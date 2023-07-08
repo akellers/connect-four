@@ -237,9 +237,9 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
 # VALUATION
 def best_moves(d = {}, lim=4):
     """Return a list of optimal next move(s) for next player for game with
-    dictionary d. The algorithm looks upto lim moves ahead and regards
-    all possible wins and losses. The list elements are tuples of
-    elements of `next_moves` and and integer score. The list is
+    dictionary d. The algorithm looks upto `lim` moves ahead and
+    regards all possible wins and losses. The list elements are tuples
+    of elements of `next_moves` and and integer score. The list is
     ordered by descending score. A higher score indicates moves which
     either lead to a win or prevent losses.
 
@@ -259,7 +259,7 @@ def best_moves(d = {}, lim=4):
     while not final and ahead <= lim:
         # win dicts with len = look ahead
         dl = [ m for m in ndicts if len(m)-length == ahead ]
-        print("Look ahead = %d, no. of games: %d" % (ahead, len(dl)))
+        # print("Look ahead = %d, no. of games: %d" % (ahead, len(dl)))
         while len(dl) > 0:
             cd = dl.pop()
             cm = list(cd.items())[length] # current move
@@ -273,7 +273,7 @@ def best_moves(d = {}, lim=4):
         ahead += 1
 
     moves = sorted(list(values.items()), key=lambda kv: kv[1], reverse=True)
-    print("Best moves: " + ' '.join([ str(e[0][0][1]+1) + '(' + str(e[1]) + ')' for e in moves ]))
+    # print("Best moves: " + ' '.join([ str(e[0][0][1]+1) + '(' + str(e[1]) + ')' for e in moves ]))
     return moves
         
 # PLAYING
@@ -300,11 +300,11 @@ def play(d = {}):
                 c = int(ch)-1
                 m = next((m for m in ms if m[0][1] == c), None)
                 if m == None:
-                    print("Column '%s' not allowed!" % ch)
+                    print(" Column '%s' not allowed!" % ch)
                 else:
                     val = True
             else:
-                print("Invalid input '%s'!" % ch)
+                print(" Invalid input '%s'!" % ch)
         if brk:
             break
         else:
