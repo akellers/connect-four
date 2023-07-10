@@ -237,81 +237,81 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
 
 # VALUATION
 def best_moves(d = {}, lim=4):
-    """Return a list of optimal next move(s) for next player for game with
-    dictionary d. The algorithm looks upto `lim` moves ahead and
-    regards all possible wins and losses. The list elements are tuples
-    of elements of `next_moves` and and integer score. The list is
-    ordered by descending score. A higher score indicates moves which
-    either lead to a win or prevent losses.
+    """Return a list of optimal next move(s) for next player in a game
+    with dictionary `d`. The algorithm looks upto `lim` moves ahead
+    and regards all possible wins and losses. The list elements are
+    tuples of an integer score and list of moves with that score. The
+    list is ordered by descending score. Higher scores indicate moves
+    which either lead to a win or prevent losses.
 
     d: dict of type ((int, int), int)
     lim: int (defaults to 4)
-
-    Returns: list of type (((int, int), int), int)
-
+    Returns: list of type (int, ((int, int), int))
     """
     length = len(d)
     # dict with moves and priorities
-    values = { m : 0 for m in next_moves(d) }
+    moves = { m : 0 for m in next_moves(d) }
     # all next win dicts up to 'lim'
-    ndicts = [ n for n in next_dicts(d, lim=lim, verbose=False) if is_win(n) ]
-    final  = False # break condition
-    ahead  = 1 # look ahead
+    dicts = [ n for n in next_dicts(d, lim=lim, verbose=False) if is_win(n) ]
+    final = False # break condition
+    ahead = 1 # look ahead
     while not final and ahead <= lim:
         # win dicts with len = look ahead
-        dl = [ m for m in ndicts if len(m)-length == ahead ]
+        dl = [ m for m in dicts if len(m)-length == ahead ]
         # print("Look ahead = %d, no. of games: %d" % (ahead, len(dl)))
         while len(dl) > 0:
             cd = dl.pop()
             cm = list(cd.items())[length] # current move
             if ahead % 2 == 1: # current player wins
                 # result.append(encode(cd)[length:] + "+")
-                values[cm] += 1
+                moves[cm] += 1
             else: # current player loses
                 # result.append(encode(cd)[length:] + "-")
-                values[cm] -= 1
+                moves[cm] -= 1
             final = True
         ahead += 1
-
-    moves = sorted(list(values.items()), key=lambda kv: kv[1], reverse=True)
-    # print("Best moves: " + ' '.join([ str(e[0][0][1]+1) + '(' + str(e[1]) + ')' for e in moves ]))
-    return moves
+    # transpose moves dict
+    rdict = { s : [] for s in sorted(moves.values(), reverse=True) }
+    for (m, s) in moves.items():
+        rdict[s].append(m)
+    return list(rdict.items()) 
         
 # PLAYING
 def play(d = {}, auto=[]):
     """Starts an interactive game play starting with game dictionary
     `d`. The game can be terminated by entering 'q' or 'Q'. Moves for
-    players in `auto` are automatically chosen.
+    players in list `auto` are automatically chosen.
 
     d: dict of type {(int, int), int} (defaults to {})
-    auto: list of type int (defaults to []
-
+    auto: list of type int (defaults to [])
     Returns: dict of type { (int, int): int }
-
     """
     while not is_final(d, verbose=True):
-        p = len(d) % 2 # player index
         print('\n' + str(grid(d)))
-        ms = next_moves(d)
+        p = len(d) % 2 # player index
         val = False # valid input
         brk = False
+        nxt = next_moves(d)
         while not val:
             if p in auto:
-                ch = str(best_moves(d)[0][0][0][1]+1)
+                bst = best_moves(d)[0][1] # best_move(s)
+                mov = bst[len(bst)//2][0] # median move
+                ans = str(mov[1]+1)
             else:
-                ch = input(' Enter column, Player %s: ' % PLAYERS[p])
-            if ch in ['q', 'Q']:
+                ans = input(' Enter column, Player %s: ' % PLAYERS[p])
+            if ans in ['q', 'Q']:
                 brk = True
                 val = True
-            elif ch in [str(i+1) for i in range(MAXCOLS)]:
-                c = int(ch)-1
-                m = next((m for m in ms if m[0][1] == c), None)
+            elif ans in [str(i+1) for i in range(MAXCOLS)]:
+                c = int(ans)-1
+                m = next((m for m in nxt if m[0][1] == c), None)
                 if m == None:
-                    print(" Column '%s' not allowed!" % ch)
+                    print(" Column '%s' not allowed!" % ans)
                 else:
+                    print(" Plays column '%s'!" % ans)
                     val = True
             else:
-                print(" Invalid input '%s'!" % ch)
+                print(" Invalid input '%s'!" % ans)
         if brk:
             break
         else:
