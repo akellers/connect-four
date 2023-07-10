@@ -9,11 +9,13 @@
 # character names the chosen columns (from 1 to 7).
 #
 # For implementation purposes this game sequence can be represented by
-# a dictionary. Keys of the dictionary are the resulting position on
-# the board (a grid with 6 rows and 7 columns). The values hold the
-# respective player index (0 or 1).
+# a dictionary. Keys of the dictionary are the (resulting) position on
+# the board as tuples with row and column (on a grid with 6 rows and 7
+# columns).  Row and column in position tuples are zero-based. The
+# values of such a dictionary hold the respective player index (0 or
+# 1).
 #
-# Note: The `encode' function relies on the fact that Python
+# Note: The `encode` function relies on the fact that Python
 # dictionaries preserve insertion order (since version 3.7)
 #
 
@@ -30,13 +32,14 @@ PLAYERS = { 0 : PLAYER1, 1 : PLAYER2 }
 VERBOSE = False
 
 # ENCODING/DECODING
-def decode(s):
-    """Return dict from game sequence s with postions (int, int) as key
-    and player index (int). Decoding stops if resulting position is
-    not valid, i.e. exceeds maximum number of rows or columns.
+def decode(s, verbose=VERBOSE):
+    """Return dictionary from game sequence `s` with positions (int, int)
+    as key and player index (int). Decoding stops if resulting
+    position is not valid, i.e. exceeds maximum number of rows or
+    columns, and if a subsequence leads to a win.
 
     s: str
-    Returns: dict with key (int, int) and value int
+    Returns: dict of type { (int, int) : int }
 
     """
     dic = {} # resulting dict
@@ -50,18 +53,20 @@ def decode(s):
             p = i % 2 # player index starting with 0
             r = row.get(c, -1) # free row in column c
             if is_win(dic):
-                print("Sequence '%s' leads to win yet!" % s[:i])
+                if verbose:
+                    print("Sequence '%s' leads to win yet!" % s[:i])
                 return dic
             elif 0 <= c < MAXCOLS and 0 <= r < MAXROWS:
                 dic[(r, c)] = p # add pos and player into dict
                 row[c] = r + 1 # increase row for column c
             else:
-                print("Sequence '%s' leads to filled column %d yet!" % (s[:i], c+1))
+                if verbose:
+                    print("Sequence '%s' leads to filled column %d yet!" % (s[:i], c+1))
                 return dic
     return dic
 
 def encode(d):
-    """Return string with game sequence from dictionary d.
+    """Return string with game sequence from dictionary `d`.
 
     d: dict
     Returns: str
@@ -70,12 +75,12 @@ def encode(d):
 
 # PRINTABLE REPRESENTATION
 def grid(s):
-    """Returns printable string representing the board after game
-    sequence s (or dictionary). Moves are colored using ASCII encoding.
+    """Returns printable string representing the board after game sequence
+    `s` (string or dictionary). Moves are colored using ASCII
+    encoding.
 
-    s: str or dict
+    s: str or dict of type { (int, int) : int }
     Returns: str
-
     """
     p = '' # the result string
     if isinstance(s, str):
@@ -103,12 +108,11 @@ def grid(s):
 # TESTING
 def is_win(d, verbose=VERBOSE):
     """Returns True if game dictionary d shows a win. Prints information
-    about win if optional parameter 'verbose' is set to 'True'.
+    about win if optional parameter `verbose` is set to `True`.
 
     d: dict
-    verbose: bool
+    verbose: bool (defaults to False)
     Returns: bool
-
     """
     if len(d) < 7: return False # number of moves to low
 
@@ -162,12 +166,11 @@ def is_win(d, verbose=VERBOSE):
     return False
 
 def is_final(d, verbose=VERBOSE):
-    """Returns True if game dictionary is a win or no further move is
-    possible because the board is filled.
+    """Returns `True` if game dictionary `d` is a win or no further move
+    is possible because the board is filled.
 
-    s: dict
+    s: dict of type { (int, int) : int }
     Returns: bool
-
     """
     return is_win(d, verbose=verbose) or len(d) == MAXROWS * MAXCOLS
 
@@ -179,7 +182,6 @@ def next_moves(d):
 
     d: dict of type ((int, int), int)
     Returns: list of type ((int, int), int)
-
     """
     l = [] # result list
     p = len(d) % 2 # player for next move
@@ -207,7 +209,6 @@ def next_dicts(d = {}, lim = 1, out=None, verbose=VERBOSE):
     verbose: bool (defaults to True)
 
     Returns: list of dicts with type ((int, int), int)
-
     """
     ds = [d] # start list
     rs = [] # result list
