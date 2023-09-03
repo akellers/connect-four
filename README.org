@@ -254,3 +254,11 @@
    Spieler R dieses Feld nicht vorher besetzen. Insgesamt gibt es 48
    Ergebnisse, da jeder Spieler 7 Spalten besetzen kann, nur Spalte 2
    kann nicht von beiden Spielen genutzt werden.
+
+* Ideen
+
+  Die Implementierung unterstützt mittlerweile einen einfachen
+  Spielmodus, der sich via =ipython -i connect-four.py= mit =play()=
+  aufrufen lässt. Mit dem optionalen Parameter =auto= kann eine Liste
+  der Spielerindizes übergeben werden, für die dann der Algorithmus
+  die Zugauswahl übernimmt.  
